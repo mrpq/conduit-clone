@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+:root {
+  box-sizing: border-box;
+  font-size: 1em;
+}
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1rem;
+  line-height: 1.375em;
+}
+.container {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.two-column {
+  display: flex;
+}
+
+.left-column {
+  flex-grow: 1;
+}
+
+.sidebar {
+  margin-top: 1em;
+  max-width: 200px;
+  margin-left: 35px;
+}
+
+.banner {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: center;
+  color: #fff;
+  background-color: #4fb862;
+}
+.banner-title {
+  font-size: 3rem;
+  line-height: 1.05em;
+}
+.banner > p {
+  font-size: 1.25rem;
+}
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  list-style-type: none;
+  justify-content: flex-end;
+}
+.nav-bar-item {
+  padding: 10px 15px;
+}
+.nav-bar-logo {
+  flex-grow: 1;
+}
+.nav-bar-link {
+  text-decoration: none;
+  color: #b2b2b2;
+}
+
+.feed {
+  margin-top: 1em;
+}
+
+.feed-tabs {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style-type: none;
+}
+.feed-tabs-item {
+  padding: 10px 15px;
+}
+
+.active {
+  color: #4fb862;
+  border-bottom: 2px solid #4fb862;
+}
+
+.article {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  border-top: 1px solid #b2b2b2;
+}
+.article-header {
+  display: flex;
+}
+.author-avatar {
+  width: 34px;
+  height: 34px;
+  background: url("./smiley-cyrus.jpg");
+  background-size: contain;
+  border-radius: 50%;
+}
+.article-likes-wrapper {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.article-meta {
+  margin-left: 5px;
+}
+.author {
+  color: #4fb862;
+  line-height: 1em;
+}
+.publish-date {
+  font-size: 0.75rem;
+  color: #b2b2b2;
+}
+
+.article-likes {
+  display: inline-block;
+  padding: 3px 5px;
+  border: 1px solid #4fb862;
+  border-radius: 3px;
+  font-size: 0.75em;
+  color: #4fb862;
+}
+.article-likes:hover {
+  cursor: pointer;
+  background-color: #4fb862;
+  color: #fff;
+}
+
+.article-link {
+  color: #b2b2b2;
+  text-decoration: none;
+  font-size: 0.75em;
+}
+
+.taglist-container {
+  padding: 5px 10px;
+  background-color: #eee;
+  border-radius: 4px;
+}
+.taglist-header {
+  margin: 0;
+  padding: 10px 0;
+  font-weight: normal;
+}
+.taglist {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.taglist-tag {
+  padding: 4px 8px;
+  margin-right: 4px;
+  margin-bottom: 5px;
+  font-size: 0.75em;
+  line-height: 1em;
+  border-radius: 9px;
+  background-color: #808a90;
+  color: #fff;
+}
+
+.feed-nav {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+.feed-nav-item {
+  padding: 10px;
+  color: #4fb862;
+  border: 1px solid #b2b2b2;
+  border-right: none;
+}
+
+.feed-nav-item-active {
+  color: #fff;
+  border: none;
+  background-color: #4fb862;
+}
+
+.feed-nav-item:first-of-type {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.feed-nav-item:last-of-type {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border: 1px solid #b2b2b2;
+}
