@@ -43,12 +43,11 @@ class Pagination extends Component {
     const pages = [];
     for (let i = 0; i < pagesCount; i += 1) {
       pages.push(
-        <PageListItem isActive={i === currPage}>
+        <PageListItem key={i} isActive={i === currPage}>
           <Link onClick={this.handlePageClick(i)}>{i + 1}</Link>
         </PageListItem>
       );
     }
-    console.log(pages.length);
     return pages;
   }
   render() {

@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import ArticlesContainer from "../Layout/ArticlesContainer";
 import ArticlePreview from "./ArticlePreview";
 import Pagination from "./Pagination";
 
+import { getArticles } from "../reducers/";
+
 class View extends Component {
   render() {
     const { articles, onArticleClick } = this.props;
+    console.log("Boop");
     return (
       <Fragment>
         <ArticlesContainer>
@@ -24,5 +28,12 @@ class View extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    articles: getArticles(state)
+  };
+};
+
+View = connect(mapStateToProps)(View);
 
 export default View;

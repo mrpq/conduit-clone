@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { fetchUser } from "../actions/";
+import { fetchUser, fetchTags } from "../actions/";
 import { connect } from "react-redux";
 import Heading from "../Heading/";
 import Articles from "../Articles/";
+import Tags from "../Tags/";
 import { TabsContainer, Tab } from "../Tabs/";
 import { getCurrTab, getUsername } from "../reducers/";
 import renderWithAuth from "../RenderWithAuthHOC";
@@ -18,10 +19,11 @@ class Home extends Component {
     this.fetchData();
   }
   componentWillUpdate() {
-    this.fetchData();
+    // this.fetchData();
   }
   fetchData() {
     const { dispatch } = this.props;
+    dispatch(fetchTags());
     return dispatch(fetchUser());
   }
   render() {
@@ -31,28 +33,30 @@ class Home extends Component {
       <Fragment>
         <Heading />
         <UniversalContainer>
-          <TabsContainer>
-            <PrivateTab
-              type="feed"
-              user={user}
-              isActive={currTab.type === "feed"}
-            >
-              Your Feed
-            </PrivateTab>
-            <Tab type="global" isActive={currTab.type === "global"}>
-              Global Feed
-            </Tab>
-            {currTab.tag ? (
-              <Tab type="tag" isActive={currTab.type === "tag"}>{`#${
-                currTab.tag
-              }`}</Tab>
-            ) : null}
-          </TabsContainer>
           <TwoColumnsContainer>
             <LeftColumn>
+              <TabsContainer>
+                <PrivateTab
+                  type="feed"
+                  user={user}
+                  isActive={currTab.type === "feed"}
+                >
+                  Your Feed
+                </PrivateTab>
+                <Tab type="global" isActive={currTab.type === "global"}>
+                  Global Feed
+                </Tab>
+                {currTab.tag ? (
+                  <Tab type="tag" isActive={currTab.type === "tag"}>{`#${
+                    currTab.tag
+                  }`}</Tab>
+                ) : null}
+              </TabsContainer>
               <Articles />
             </LeftColumn>
-            <RightColumn>Sidebar</RightColumn>
+            <RightColumn>
+              <Tags />
+            </RightColumn>
           </TwoColumnsContainer>
         </UniversalContainer>
       </Fragment>

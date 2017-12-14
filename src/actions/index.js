@@ -20,7 +20,10 @@ import {
   ARTICLE_FETCH_SUCCESS,
   ARTICLE_FETCH_FAILURE,
   CURR_TAB_SET,
-  PAGE_SET
+  PAGE_SET,
+  TAG_FETCH_REQUEST,
+  TAG_FETCH_SUCCESS,
+  TAG_FETCH_FAILURE
 } from "./constants";
 
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
@@ -41,6 +44,10 @@ const fetchArticleFailure = createAction(ARTICLE_FETCH_FAILURE);
 
 export const setCurrTab = createAction(CURR_TAB_SET);
 export const setPage = createAction(PAGE_SET);
+
+export const fetchTagsRequest = createAction(TAG_FETCH_REQUEST);
+export const fetchTagsSuccess = createAction(TAG_FETCH_SUCCESS);
+export const fetchTagsFailure = createAction(TAG_FETCH_FAILURE);
 
 export const loginUser = ({ email, password }) => dispatch => {
   dispatch({
@@ -73,11 +80,9 @@ export const logoutUser = () => {
 export const fetchUser = user => (dispatch, getState) => {
   const token = localStorage.getItem("jwt_token");
   if (!token) {
-    console.log("JWT Token not found. Can not fetch user");
     return Promise.resolve();
   }
   if (getUsername(getState())) {
-    console.log("User is allready in store. Skipping");
     return Promise.resolve();
   }
   return axios({
@@ -161,5 +166,22 @@ export const fetchArticle = slug => dispatch => {
     headers: headers
   }).then(({ data }) => {
     return dispatch(fetchArticleSuccess({ article: data.article }));
+  });
+};
+
+export const fetchTags = () => dispatch => {
+  const headers = {
+    "Content-Type": "application/json"
+  };
+  const token = localStorage.getItem("jwt_token");
+  if (token) {
+    headers.Authorization = `Token ${token}`;
+  }
+  dispatch(fetchTagsRequest());
+  return axios({
+    url: `https://conduit.productionready.io/api/tags`,
+    headers: headers
+  }).then(({ data }) => {
+    return dispatch(fetchTagsSuccess({ tags: data.tags }));
   });
 };

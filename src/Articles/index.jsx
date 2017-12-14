@@ -16,7 +16,8 @@ class Articles extends Component {
     const { currTab: currCurrTab } = this.props;
     if (
       prevCurrTab.type !== currCurrTab.type ||
-      prevCurrTab.pagination.page !== currCurrTab.pagination.page
+      prevCurrTab.pagination.page !== currCurrTab.pagination.page ||
+      prevCurrTab.tag !== currCurrTab.tag
     ) {
       this.fetchData();
     }
@@ -34,22 +35,21 @@ class Articles extends Component {
       endpoint = "/api/articles/feed";
     }
     if (currTab.type === "user") params["user"] = currTab.user;
+    if (currTab.type === "tag") params["tag"] = currTab.tag;
     return fetchArticles(endpoint, params);
   }
 
   render() {
-    const { articles, onArticleClick } = this.props;
+    const { onArticleClick } = this.props;
     return <View {...this.props} />;
   }
 }
 
 Articles.propTypes = {
-  articles: PropTypes.array,
   currTab: PropTypes.object
 };
 const mapStateToProps = (state, ownProps) => {
   return {
-    articles: getArticles(state),
     currTab: getCurrTab(state)
   };
 };

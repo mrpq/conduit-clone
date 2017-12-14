@@ -3,12 +3,14 @@ import * as fromAuth from "./auth";
 import * as fromUser from "./user";
 import * as fromCurrArticle from "./currArticle";
 import * as fromCurrTab from "./currTab";
+import * as fromTags from "./tags";
 
 export { default as articles } from "./articles";
 export { default as auth } from "./auth";
 export { default as currArticle } from "./currArticle";
 export { default as currTab } from "./currTab";
 export { default as user } from "./user";
+export { default as tags } from "./tags";
 
 export const getArticles = state => {
   return fromArticles.getArticles(state.articles);
@@ -39,4 +41,8 @@ export const getUsername = state => {
 
 export const getCurrTab = state => {
   return fromCurrTab.getCurrTab(state.currTab);
+};
+
+export const getTags = state => {
+  return fromTags.getTags(state.tags);
 };

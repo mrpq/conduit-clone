@@ -31,6 +31,8 @@ const pagination = (state = { limit: 10, page: 0 }, action) => {
   switch (action.type) {
     case PAGE_SET:
       return { ...state, page: action.payload.page };
+    case CURR_TAB_SET:
+      return { ...state, page: 0 };
     default:
       return state;
   }
@@ -48,7 +50,8 @@ const tag = (state = "", action) => {
 const currTab = combineReducers({
   type,
   user,
-  pagination
+  pagination,
+  tag
 });
 
 export default currTab;
