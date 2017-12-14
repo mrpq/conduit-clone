@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { CURR_TAB_SET } from "../actions";
+import { CURR_TAB_SET, PAGE_SET } from "../actions";
 
 const currTab_ = {
   type: "user", //feed, global, favourite
@@ -27,8 +27,10 @@ const user = (state = "", action) => {
       return state;
   }
 };
-const pagination = (state = { limit: 20, page: 0 }, action) => {
+const pagination = (state = { limit: 10, page: 0 }, action) => {
   switch (action.type) {
+    case PAGE_SET:
+      return { ...state, page: action.payload.page };
     default:
       return state;
   }

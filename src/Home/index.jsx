@@ -8,7 +8,12 @@ import { getUsername } from "../reducers";
 import { getCurrTab } from "../reducers/currTab";
 import renderWithAuth from "../RenderWithAuthHOC";
 import { setCurrTab } from "../actions";
-import Feed from "../Articles/Feed";
+import {
+  TwoColumnsContainer,
+  LeftColumn,
+  RightColumn,
+  UniversalContainer
+} from "../Layout/";
 
 class Home extends Component {
   componentDidMount() {
@@ -27,25 +32,30 @@ class Home extends Component {
     return (
       <Fragment>
         <Heading />
-        <TabsContainer>
-          <PrivateTab
-            type="feed"
-            user={user}
-            isActive={currTab.type === "feed"}
-          >
-            Your Feed
-          </PrivateTab>
-          <Tab type="global" isActive={currTab.type === "global"}>
-            Global Feed
-          </Tab>
-          {currTab.tag ? (
-            <Tab type="tag" isActive={currTab.type === "tag"}>{`#${
-              currTab.tag
-            }`}</Tab>
-          ) : null}
-        </TabsContainer>
-        {/* <Feed /> */}
-        <Articles />
+        <UniversalContainer>
+          <TabsContainer>
+            <PrivateTab
+              type="feed"
+              user={user}
+              isActive={currTab.type === "feed"}
+            >
+              Your Feed
+            </PrivateTab>
+            <Tab type="global" isActive={currTab.type === "global"}>
+              Global Feed
+            </Tab>
+            {currTab.tag ? (
+              <Tab type="tag" isActive={currTab.type === "tag"}>{`#${
+                currTab.tag
+              }`}</Tab>
+            ) : null}
+          </TabsContainer>
+          <TwoColumnsContainer>
+            <LeftColumn>
+              <Articles />
+            </LeftColumn>
+          </TwoColumnsContainer>
+        </UniversalContainer>
       </Fragment>
     );
   }

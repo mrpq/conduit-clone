@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "history": "^4.7.2",
+    "luxon": "^0.2.8",
     "node-fetch": "^1.7.3",
     "normalize.css": "^7.0.0",
     "normalizr": "^3.2.4",

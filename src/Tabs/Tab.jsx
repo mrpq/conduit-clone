@@ -1,21 +1,20 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { connect } from "react-redux";
 
 import { setCurrTab } from "../actions";
 
-const Tab_ = props => {
-  const { id, isActive, onTabClick } = props;
-  const Item = styled.li`
-    padding: 10px 15px;
-  `;
-  const Button = styled.button``;
-  return (
-    <Item>
-      <Button onClick={onTabClick}>{props.children}</Button>
-    </Item>
-  );
-};
+const FeedButton = styled.button`
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  ${props =>
+    props.isActive &&
+    css`
+      color: #4fb862;
+      border-bottom: 2px solid #4fb862;
+    `};
+`;
 
 class Tab extends Component {
   constructor(props) {
@@ -29,7 +28,18 @@ class Tab extends Component {
   }
 
   render() {
-    return <Tab_ onTabClick={this.handleTabClick}>{this.props.children}</Tab_>;
+    const { children, isActive } = this.props;
+    return (
+      <li>
+        <FeedButton
+          onClick={this.handleTabClick}
+          isActive={isActive}
+          disabled={isActive}
+        >
+          {this.props.children}
+        </FeedButton>
+      </li>
+    );
   }
 }
 Tab = connect()(Tab);

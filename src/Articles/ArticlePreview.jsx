@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
+import { DateTime } from "luxon";
+
 const Article = styled.article`
   padding-top: 24px;
   padding-bottom: 24px;
@@ -12,7 +14,7 @@ const Header = styled.header`
 const Avatar = styled.div`
   width: 34px;
   height: 34px;
-  background: url("./smiley-cyrus.jpg");
+  background: url("https://static.productionready.io/images/smiley-cyrus.jpg");
   background-size: contain;
   border-radius: 50%;
 `;
@@ -57,7 +59,7 @@ const ArticlePreview = ({ article, onArticleClick }) => {
     favourited,
     favoritesCount,
     body,
-    desctiption
+    description
   } = article;
   return (
     <Article>
@@ -65,6 +67,9 @@ const ArticlePreview = ({ article, onArticleClick }) => {
         <Avatar />
         <Meta>
           <Author>{author.username}</Author>
+          <PublishDate>
+            {DateTime.fromISO(createdAt).toLocaleString()}
+          </PublishDate>
         </Meta>
         <LikesWrapper>
           <Likes>&hearts;{`${favoritesCount}`}</Likes>
@@ -72,7 +77,7 @@ const ArticlePreview = ({ article, onArticleClick }) => {
       </Header>
       <Title>{title}</Title>
       <Preview>
-        {desctiption ||
+        {description ||
           body
             .split(" ")
             .slice(0, 10)
@@ -92,27 +97,3 @@ const ArticlePreview = ({ article, onArticleClick }) => {
 };
 
 export default ArticlePreview;
-
-/* <div>
-      <h4>{`Author: ${author.username}`}</h4>
-      <a
-        href="#"
-        onClick={e => {
-          e.preventDefault();
-          onArticleClick(slug);
-        }}
-      >
-        {title}
-      </a>
-      <p>
-        {desctiption ||
-          body
-            .split(" ")
-            .slice(0, 10)
-            .join(" ")}
-      </p>
-      {tagList.length ? (
-        <ul>{tagList.map((tag, i) => <li key={i}>{tag}</li>)}</ul>
-      ) : null}
-      <hr />
-    </div> */

@@ -20,6 +20,7 @@ export const ARTICLE_FETCH_SUCCESS = "ARTICLE_FETCH_SUCCESS";
 export const ARTICLE_FETCH_FAILURE = "ARTICLE_FETCH_FAILURE";
 
 export const CURR_TAB_SET = "CURR_TAB_SET";
+export const PAGE_SET = "PAGE_SET";
 
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
 export const loginUserFailure = createAction(USER_LOGIN_FAILURE);
@@ -38,6 +39,7 @@ const fetchArticleSuccess = createAction(ARTICLE_FETCH_SUCCESS);
 const fetchArticleFailure = createAction(ARTICLE_FETCH_FAILURE);
 
 export const setCurrTab = createAction(CURR_TAB_SET);
+export const setPage = createAction(PAGE_SET);
 
 export const loginUser = ({ email, password }) => dispatch => {
   dispatch({
@@ -103,7 +105,12 @@ export const fetchArticles = (endpoint, params) => dispatch => {
     headers,
     params
   }).then(({ data }) => {
-    dispatch(fetchArticlesSuccess({ articles: data.articles }));
+    dispatch(
+      fetchArticlesSuccess({
+        articles: data.articles,
+        articlesCount: data.articlesCount
+      })
+    );
   });
 };
 

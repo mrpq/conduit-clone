@@ -52,7 +52,12 @@ class Feed extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.currTab.type !== this.props.currTab.type) {
+    const { currTab: prevCurrTab } = prevProps;
+    const { currTab: currCurrTab } = this.props;
+    if (
+      prevCurrTab.type !== currCurrTab.type ||
+      prevCurrTab.pagination.page !== currCurrTab.pagination.page
+    ) {
       this.fetchData();
     }
   }

@@ -52,14 +52,19 @@ export const user = (state = {}, action) => {
 };
 
 export const articles = (
-  state = { articles: [], isFetching: true },
+  state = { articles: [], isFetching: true, articlesCount: 0 },
   action
 ) => {
   switch (action.type) {
     case ARTICLES_FETCH_REQUEST:
       return { ...state, isFetching: true };
     case ARTICLES_FETCH_SUCCESS:
-      return { ...state, isFetching: false, articles: action.payload.articles };
+      return {
+        ...state,
+        isFetching: false,
+        articles: action.payload.articles,
+        articlesCount: action.payload.articlesCount
+      };
     default:
       return state;
     case ARTICLES_FETCH_FAILURE:
@@ -107,4 +112,7 @@ export const getCurrArticle = state => {
 };
 export const getIsCurrArticleFetching = state => {
   return state.currArticle.isFetching;
+};
+export const getArticlesCount = state => {
+  return state.articles.articlesCount;
 };
