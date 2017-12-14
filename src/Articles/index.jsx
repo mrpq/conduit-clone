@@ -1,55 +1,103 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Feed from "./Feed";
+import { push } from "react-router-redux";
+import { fetchArticles, fetchArticle } from "../actions";
+import { getArticles } from "../reducers";
+import { getCurrTab } from "../reducers/currTab";
+import View from "./View";
 
-import { getIsAuthenticated, getUsername } from "../reducers";
+const ArticlePreview = ({ article, onArticleClick }) => {
+  const {
+    author,
+    slug,
+    tagList,
+    createdAt,
+    title,
+    favourited,
+    favouritesCount,
+    body,
+    desctiption
+  } = article;
+  return (
+    <div>
+      <h4>{`Author: ${author.username}`}</h4>
+      <a
+        href="#"
+        onClick={e => {
+          e.preventDefault();
+          onArticleClick(slug);
+        }}
+      >
+        {title}
+      </a>
+      <p>
+        {desctiption ||
+          body
+            .split(" ")
+            .slice(0, 10)
+            .join(" ")}
+      </p>
+      {tagList.length ? (
+        <ul>{tagList.map((tag, i) => <li key={i}>{tag}</li>)}</ul>
+      ) : null}
+      <hr />
+    </div>
+  );
+};
 
-class Articles extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      globalFeed: false
-    };
+class Feed extends Component {
+  componentDidMount() {
+    this.fetchData();
   }
 
-  setGlobalFeed = value => () => {
-    this.setState(prevState => {
-      return { globalFeed: value };
-    });
-  };
-
-  renderFeed() {
-    if (this.state.globalFeed) {
-      return <Feed />;
+  componentDidUpdate(prevProps) {
+    if (prevProps.currTab.type !== this.props.currTab.type) {
+      this.fetchData();
     }
-    const { username } = this.props;
-    return <Feed forUser={username} />;
+  }
+
+  fetchData() {
+    const { fetchArticles, currTab } = this.props;
+    const { pagination: { limit, page } } = currTab;
+    const params = {
+      limit,
+      offset: limit * page
+    };
+    let endpoint = "/api/articles";
+    if (currTab.type === "feed") {
+      endpoint = "/api/articles/feed";
+    }
+    if (currTab.type === "user") params["user"] = currTab.user;
+    return fetchArticles(endpoint, params);
   }
 
   render() {
-    const { isAuthenticated, username } = this.props;
-    return (
-      <div>
-        <ul>
-          {isAuthenticated ? (
-            <button onClick={this.setGlobalFeed(false)}>Your Feed</button>
-          ) : null}
-          <button onClick={this.setGlobalFeed(true)}>Global Feed</button>
-        </ul>
-        <hr />
-        {this.renderFeed()}
-      </div>
-    );
+    const { articles, onArticleClick } = this.props;
+    return <View {...this.props} />;
   }
 }
 
-const mapStateToProps = state => {
+Feed.propTypes = {
+  articles: PropTypes.array,
+  currTab: PropTypes.object
+};
+const mapStateToProps = (state, ownProps) => {
   return {
-    isAuthenticated: getIsAuthenticated(state),
-    username: getUsername(state)
+    articles: getArticles(state),
+    currTab: getCurrTab(state)
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchArticles: (...params) => dispatch(fetchArticles(...params)),
+    onArticleClick: slug => {
+      dispatch(fetchArticle(slug));
+      dispatch(push(`/article/${slug}`));
+    }
   };
 };
 
-Articles = connect(mapStateToProps)(Articles);
+Feed = connect(mapStateToProps, mapDispatchToProps)(Feed);
 
-export default Articles;
+export default Feed;

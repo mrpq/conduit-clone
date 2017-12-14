@@ -7,7 +7,7 @@ import {
   Switch
 } from "react-router-dom";
 import { ConnectedRouter } from "react-router-redux";
-
+import "normalize.css";
 import "./App.css";
 
 import Login from "./Login";

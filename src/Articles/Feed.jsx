@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { fetchArticles, fetchArticle } from "../actions";
 import { getArticles } from "../reducers";
+import { getCurrTab } from "../reducers/currTab";
 
 const ArticlePreview = ({ article, onArticleClick }) => {
   const {
@@ -30,10 +31,11 @@ const ArticlePreview = ({ article, onArticleClick }) => {
         {title}
       </a>
       <p>
-        {body
-          .split(" ")
-          .slice(0, 10)
-          .join(" ")}
+        {desctiption ||
+          body
+            .split(" ")
+            .slice(0, 10)
+            .join(" ")}
       </p>
       {tagList.length ? (
         <ul>{tagList.map((tag, i) => <li key={i}>{tag}</li>)}</ul>
@@ -51,17 +53,24 @@ class Feed extends Component {
     // this.fetchData();
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.forUser !== this.props.forUser) {
+    if (prevProps.currTab.type !== this.props.currTab.type) {
       this.fetchData();
     }
   }
 
   fetchData() {
-    const { fetchArticles, forUser } = this.props;
-    const params = {};
-    if (forUser) params.author = forUser;
-    // return dispatch(fetchArticles(params));
-    return fetchArticles(params);
+    const { fetchArticles, currTab } = this.props;
+    const { pagination: { limit, page } } = currTab;
+    const params = {
+      limit,
+      offset: limit * page
+    };
+    let endpoint = "/api/articles";
+    if (currTab.type === "feed") {
+      endpoint = "/api/articles/feed";
+    }
+    if (currTab.type === "user") params["user"] = currTab.user;
+    return fetchArticles(endpoint, params);
   }
 
   render() {
@@ -83,16 +92,18 @@ class Feed extends Component {
 }
 
 Feed.propTypes = {
-  articles: PropTypes.array
+  articles: PropTypes.array,
+  currTab: PropTypes.object
 };
 const mapStateToProps = (state, ownProps) => {
   return {
-    articles: getArticles(state)
+    articles: getArticles(state),
+    currTab: getCurrTab(state)
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchArticles: params => dispatch(fetchArticles(params)),
+    fetchArticles: (...params) => dispatch(fetchArticles(...params)),
     onArticleClick: slug => {
       dispatch(fetchArticle(slug));
       dispatch(push(`/article/${slug}`));

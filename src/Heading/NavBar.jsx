@@ -1,78 +1,78 @@
 import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import { getUsername, getIsAuthenticated } from "../reducers";
 import { logoutUser } from "../actions";
 
-const NavBarItem = ({ children, to, dispatch, action }) => (
-  <li>
-    <a
-      href="#"
-      onClick={e => {
-        e.preventDefault();
-        action && action();
-        dispatch(push(to));
-      }}
-    >
-      {children}
-    </a>
-  </li>
-);
+import renderWithAuth from "../RenderWithAuthHOC";
 
-const PrivateNavBarItem = ({ isAuthenticated, ...props }) => {
-  return isAuthenticated ? <NavBarItem {...props} /> : null;
+const NavBarItem = props => {
+  const { children, to, dispatch, action } = props;
+  const ListItem = styled.li`
+    padding: 10px 15px;
+  `;
+  const Link = styled.a`
+    text-decoration: none;
+    color: #b2b2b2;
+  `;
+  return (
+    <ListItem>
+      <Link
+        href={to}
+        onClick={e => {
+          e.preventDefault();
+          action && action();
+          dispatch(push(to));
+        }}
+      >
+        {children}
+      </Link>
+    </ListItem>
+  );
 };
-const AuthNavBarItem = ({ isAuthenticated, ...props }) => {
-  return isAuthenticated ? <NavBarItem {...props} /> : null;
-};
+
+const PrivateNavBarItem = renderWithAuth(NavBarItem);
+const PublicNavBarItem = renderWithAuth(NavBarItem, false);
+
+const NavBarContainer = styled.ul`
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  list-style-type: none;
+  justify-content: flex-end;
+`;
 
 class NavBar extends Component {
   render() {
-    const { username, isAuthenticated, dispatch } = this.props;
+    const { username, dispatch } = this.props;
     return (
-      <ul>
+      <NavBarContainer>
         <NavBarItem to="/" dispatch={dispatch}>
           Home
         </NavBarItem>
-        <AuthNavBarItem
-          to="/editor"
-          isAuthenticated={isAuthenticated}
-          dispatch={dispatch}
-        >
+        <PrivateNavBarItem to="/editor" dispatch={dispatch}>
           New Article
-        </AuthNavBarItem>
-        <AuthNavBarItem
-          to="/settings"
-          isAuthenticated={isAuthenticated}
-          dispatch={dispatch}
-        >
+        </PrivateNavBarItem>
+        <PrivateNavBarItem to="/settings" dispatch={dispatch}>
           Settings
-        </AuthNavBarItem>
-        <AuthNavBarItem
-          to={`/@${username}`}
-          isAuthenticated={isAuthenticated}
-          dispatch={dispatch}
-        >
+        </PrivateNavBarItem>
+        <PrivateNavBarItem to={`/@${username}`} dispatch={dispatch}>
           {username}
-        </AuthNavBarItem>
-        <AuthNavBarItem
-          to="/login"
-          isAuthenticated={!isAuthenticated}
-          dispatch={dispatch}
-        >
+        </PrivateNavBarItem>
+        <PublicNavBarItem to="/login" dispatch={dispatch}>
           Login
-        </AuthNavBarItem>
-        <AuthNavBarItem
+        </PublicNavBarItem>
+        <PrivateNavBarItem
           to="/"
-          isAuthenticated={isAuthenticated}
           dispatch={dispatch}
-          action={() => {
-            dispatch(logoutUser());
-          }}
+          action={() => dispatch(logoutUser())}
         >
           Logout
-        </AuthNavBarItem>
-      </ul>
+        </PrivateNavBarItem>
+      </NavBarContainer>
     );
   }
 }

@@ -1,9 +1,18 @@
+import React, { Component, Fragment } from "react";
+import UniversalContainer from "../Layout/UniversalContainer";
 import NavBar from "./NavBar";
-import React, { Component } from "react";
+import Banner from "./Banner";
 
 class Heading extends Component {
   render() {
-    return <NavBar />;
+    return (
+      <Fragment>
+        <UniversalContainer>
+          <NavBar />
+        </UniversalContainer>
+        <Banner />
+      </Fragment>
+    );
   }
 }
 

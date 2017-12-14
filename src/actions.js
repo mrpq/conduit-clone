@@ -19,6 +19,8 @@ export const ARTICLE_FETCH_REQUEST = "ARTICLE_FETCH_REQUEST";
 export const ARTICLE_FETCH_SUCCESS = "ARTICLE_FETCH_SUCCESS";
 export const ARTICLE_FETCH_FAILURE = "ARTICLE_FETCH_FAILURE";
 
+export const CURR_TAB_SET = "CURR_TAB_SET";
+
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
 export const loginUserFailure = createAction(USER_LOGIN_FAILURE);
 
@@ -34,6 +36,8 @@ const publishArticleFailure = createAction(ARTICLE_PUBLISH_FAILURE);
 const fetchArticleRequest = createAction(ARTICLE_FETCH_REQUEST);
 const fetchArticleSuccess = createAction(ARTICLE_FETCH_SUCCESS);
 const fetchArticleFailure = createAction(ARTICLE_FETCH_FAILURE);
+
+export const setCurrTab = createAction(CURR_TAB_SET);
 
 export const loginUser = ({ email, password }) => dispatch => {
   dispatch({
@@ -86,7 +90,7 @@ export const fetchUser = user => (dispatch, getState) => {
     .catch(error => console.log(error));
 };
 
-export const fetchArticles = params => dispatch => {
+export const fetchArticles = (endpoint, params) => dispatch => {
   const headers = {
     "Content-Type": "application/json"
   };
@@ -95,11 +99,10 @@ export const fetchArticles = params => dispatch => {
     headers.Authorization = `Token ${token}`;
   }
   return axios({
-    url: "https://conduit.productionready.io/api/articles",
+    url: `https://conduit.productionready.io${endpoint}`,
     headers,
     params
   }).then(({ data }) => {
-    console.log(data);
     dispatch(fetchArticlesSuccess({ articles: data.articles }));
   });
 };

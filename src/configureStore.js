@@ -6,6 +6,7 @@ import { routerReducer } from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 
 import { auth, user, articles, currArticle } from "./reducers";
+import currTab from "./reducers/currTab";
 
 export const history = createHistory();
 // history.listen(location => console.log(location));
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   user,
   articles,
   currArticle,
+  currTab,
   router: routerReducer
 });
 
