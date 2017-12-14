@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { fetchArticles, fetchArticle } from "../actions";
-import { getArticles } from "../reducers";
+import { getArticles } from "../reducers/articles";
 import { getCurrTab } from "../reducers/currTab";
 import View from "./View";
 

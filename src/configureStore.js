@@ -5,11 +5,9 @@ import { routerMiddleware } from "react-router-redux";
 import { routerReducer } from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 
-import { auth, user, articles, currArticle } from "./reducers";
-import currTab from "./reducers/currTab";
+import { auth, user, articles, currArticle, currTab } from "./reducers/";
 
 export const history = createHistory();
-// history.listen(location => console.log(location));
 const rootReducer = combineReducers({
   auth,
   user,

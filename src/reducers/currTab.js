@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { CURR_TAB_SET, PAGE_SET } from "../actions";
+import { CURR_TAB_SET, PAGE_SET } from "../actions/constants";
 
 const currTab_ = {
   type: "user", //feed, global, favourite
