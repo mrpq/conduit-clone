@@ -54,5 +54,5 @@ const currTab = combineReducers({
 export default currTab;
 
 export const getCurrTab = state => {
-  return state.currTab;
+  return state;
 };

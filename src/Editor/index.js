@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import { publishArticle } from "./actions";
+import { publishArticle } from "../actions";
 
 class Editor extends Component {
   constructor(props) {

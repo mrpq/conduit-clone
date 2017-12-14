@@ -2,51 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import { fetchArticles, fetchArticle } from "../actions";
-import { getArticles } from "../reducers/articles";
-import { getCurrTab } from "../reducers/currTab";
+import { fetchArticles, fetchArticle } from "../actions/";
+import { getArticles, getCurrTab } from "../reducers/";
 import View from "./View";
 
-const ArticlePreview = ({ article, onArticleClick }) => {
-  const {
-    author,
-    slug,
-    tagList,
-    createdAt,
-    title,
-    favourited,
-    favouritesCount,
-    body,
-    desctiption
-  } = article;
-  return (
-    <div>
-      <h4>{`Author: ${author.username}`}</h4>
-      <a
-        href="#"
-        onClick={e => {
-          e.preventDefault();
-          onArticleClick(slug);
-        }}
-      >
-        {title}
-      </a>
-      <p>
-        {desctiption ||
-          body
-            .split(" ")
-            .slice(0, 10)
-            .join(" ")}
-      </p>
-      {tagList.length ? (
-        <ul>{tagList.map((tag, i) => <li key={i}>{tag}</li>)}</ul>
-      ) : null}
-      <hr />
-    </div>
-  );
-};
-
-class Feed extends Component {
+class Articles extends Component {
   componentDidMount() {
     this.fetchData();
   }
@@ -83,7 +43,7 @@ class Feed extends Component {
   }
 }
 
-Feed.propTypes = {
+Articles.propTypes = {
   articles: PropTypes.array,
   currTab: PropTypes.object
 };
@@ -103,6 +63,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-Feed = connect(mapStateToProps, mapDispatchToProps)(Feed);
+Articles = connect(mapStateToProps, mapDispatchToProps)(Articles);
 
-export default Feed;
+export default Articles;

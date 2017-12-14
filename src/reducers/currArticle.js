@@ -18,8 +18,8 @@ const currArticle = (state = { article: {}, isFetching: true }, action) => {
 export default currArticle;
 
 export const getCurrArticle = state => {
-  return state.currArticle.article;
+  return state.article;
 };
 export const getIsCurrArticleFetching = state => {
-  return state.currArticle.isFetching;
+  return state.isFetching;
 };

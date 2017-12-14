@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { getUsername, getIsAuthenticated } from "../reducers";
-import { logoutUser } from "../actions";
-
+import { getUsername, getIsAuthenticated } from "../reducers/";
+import { logoutUser } from "../actions/";
 import renderWithAuth from "../RenderWithAuthHOC";
 
 const NavBarItem = props => {

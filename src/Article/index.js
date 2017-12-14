@@ -6,8 +6,8 @@ import {
   getArticles,
   getCurrArticle,
   getIsCurrArticleFetching
-} from "./reducers";
-import { fetchArticle } from "./actions";
+} from "../reducers/";
+import { fetchArticle } from "../actions";
 
 class Article extends Component {
   componentDidMount() {

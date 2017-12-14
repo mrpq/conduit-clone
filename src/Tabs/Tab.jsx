@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { connect } from "react-redux";
 
-import { setCurrTab } from "../actions";
+import { setCurrTab } from "../actions/";
 
 const FeedButton = styled.button`
   background: none;

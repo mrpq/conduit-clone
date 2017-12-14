@@ -1,4 +1,8 @@
 import * as fromArticles from "./articles";
+import * as fromAuth from "./auth";
+import * as fromUser from "./user";
+import * as fromCurrArticle from "./currArticle";
+import * as fromCurrTab from "./currTab";
 
 export { default as articles } from "./articles";
 export { default as auth } from "./auth";
@@ -15,5 +19,24 @@ export const getArticle = (state, slug) => {
 };
 
 export const getArticlesCount = state => {
-  return fromArticles(state.articles);
+  return fromArticles.getArticlesCount(state.articles);
+};
+
+export const getIsAuthenticated = state => {
+  return fromAuth.getIsAuthenticated(state.auth);
+};
+
+export const getCurrArticle = state => {
+  return fromCurrArticle.getCurrArticle(state.currArticle);
+};
+export const getIsCurrArticleFetching = state => {
+  return fromCurrArticle.getIsCurrArticleFetching(state.currArticle);
+};
+
+export const getUsername = state => {
+  return fromUser.getUsername(state.user);
+};
+
+export const getCurrTab = state => {
+  return fromCurrTab.getCurrTab(state.currTab);
 };

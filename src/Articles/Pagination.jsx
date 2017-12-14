@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import styled, { css } from "styled-components";
 
 import { setPage } from "../actions";
-import { getCurrTab } from "../reducers/currTab";
-import { getArticlesCount } from "../reducers";
+import { getCurrTab, getArticlesCount } from "../reducers/";
 
 const PagesList = styled.ul`
   display: flex;

@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { push } from "react-router-redux";
 
-import { loginUser } from "./actions";
-import { getIsAuthenticated } from "./reducers";
+import { loginUser } from "../actions/";
+import { getIsAuthenticated } from "../reducers/";
 
 class Login extends Component {
   constructor(props) {

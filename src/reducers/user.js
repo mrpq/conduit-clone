@@ -18,5 +18,5 @@ const user = (state = {}, action) => {
 export default user;
 
 export const getUsername = state => {
-  return state.user.username;
+  return state.username;
 };

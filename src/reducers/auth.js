@@ -30,5 +30,5 @@ const auth = (
 export default auth;
 
 export const getIsAuthenticated = state => {
-  return state.auth.isAuthenticated;
+  return state.isAuthenticated;
 };

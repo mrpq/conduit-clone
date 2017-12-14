@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from "react";
-import { fetchUser } from "../actions";
+import { fetchUser } from "../actions/";
 import { connect } from "react-redux";
 import Heading from "../Heading/";
 import Articles from "../Articles/";
 import { TabsContainer, Tab } from "../Tabs/";
-import { getUsername } from "../reducers";
-import { getCurrTab } from "../reducers/currTab";
+import { getCurrTab, getUsername } from "../reducers/";
 import renderWithAuth from "../RenderWithAuthHOC";
-import { setCurrTab } from "../actions";
 import {
   TwoColumnsContainer,
   LeftColumn,
@@ -54,6 +52,7 @@ class Home extends Component {
             <LeftColumn>
               <Articles />
             </LeftColumn>
+            <RightColumn>Sidebar</RightColumn>
           </TwoColumnsContainer>
         </UniversalContainer>
       </Fragment>

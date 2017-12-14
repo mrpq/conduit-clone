@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ConnectedRouter } from "react-router-redux";
 import "normalize.css";
 import "./App.css";
 
-import Login from "./Login";
+import Login from "./Login/";
 import Home from "./Home/";
-import Editor from "./Editor";
-import Article from "./Article";
+import Editor from "./Editor/";
+import Article from "./Article/";
 
 import configureStore, { history } from "./configureStore";
 
