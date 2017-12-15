@@ -9,7 +9,6 @@ import { getArticles } from "../reducers/";
 class View extends Component {
   render() {
     const { articles, onArticleClick } = this.props;
-    console.log("Boop");
     return (
       <Fragment>
         <ArticlesContainer>

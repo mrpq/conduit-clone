@@ -49,6 +49,19 @@ export const fetchTagsRequest = createAction(TAG_FETCH_REQUEST);
 export const fetchTagsSuccess = createAction(TAG_FETCH_SUCCESS);
 export const fetchTagsFailure = createAction(TAG_FETCH_FAILURE);
 
+const requestAPI = (endpoint, options) => {
+  const BASE_URL = "https://conduit.productionready.io/";
+  const requestOptions = {
+    url: `${BASE_URL}${endpoint}`,
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers
+    }
+  };
+  return axios(requestOptions);
+};
+
 export const loginUser = ({ email, password }) => dispatch => {
   dispatch({
     type: USER_LOGIN_REQUEST

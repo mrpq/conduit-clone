@@ -8,15 +8,17 @@ import { getCurrTab, getArticlesCount } from "../reducers/";
 const PagesList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  padding: 0;
+  padding: 0 1px;
   margin: 0;
   list-style-type: none;
 `;
 const PageListItem = styled.li`
+  width: 37px;
   padding: 10px;
   color: #4fb862;
   border: 1px solid #b2b2b2;
-  border-right: none;
+  text-align: center;
+  /* border-left: none; */
   ${({ isActive }) =>
     isActive &&
     css`
@@ -24,6 +26,14 @@ const PageListItem = styled.li`
       border: none;
       background-color: #4fb862;
     `}
+  }
+  &:last-of-type {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+  &:first-of-type {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
   }
 `;
 const Link = styled.a``;
