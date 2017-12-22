@@ -9,6 +9,9 @@ export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS";
 export const USER_FETCH_REQUEST = "USER_FETCH_REQUEST";
 export const USER_FETCH_SUCCESS = "USER_FETCH_SUCCESS";
 export const USER_FETCH_FAILURE = "USER_FETCH_FAILURE";
+export const USER_UPDATE_REQUEST = "USER_UPDATE_REQUEST";
+export const USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS";
+export const USER_UPDATE_FAILURE = "USER_UPDATE_FAILURE";
 export const ARTICLES_FETCH_REQUEST = "ARTICLES_FETCH_REQUEST";
 export const ARTICLES_FETCH_SUCCESS = "ARTICLES_FETCH_SUCCESS";
 export const ARTICLES_FETCH_FAILURE = "ARTICLES_FETCH_FAILURE";
@@ -27,6 +30,10 @@ export const loginUserFailure = createAction(USER_LOGIN_FAILURE);
 
 const fetchUserRequest = createAction(USER_FETCH_REQUEST);
 const fetchUserSuccess = createAction(USER_FETCH_SUCCESS);
+
+const updateUserRequest = createAction(USER_UPDATE_REQUEST);
+const updateUserSuccess = createAction(USER_UPDATE_SUCCESS);
+const updateUserFailure = createAction(USER_UPDATE_FAILURE);
 
 const fetchArticlesSuccess = createAction(ARTICLES_FETCH_SUCCESS);
 

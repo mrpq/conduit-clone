@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import isEqual from "lodash/isEqual";
 import { fetchArticles, fetchArticle } from "../actions/";
 import { getArticles, getCurrTab } from "../reducers/";
 import View from "./View";
@@ -14,13 +15,10 @@ class Articles extends Component {
   componentDidUpdate(prevProps) {
     const { currTab: prevCurrTab } = prevProps;
     const { currTab: currCurrTab } = this.props;
-    if (
-      prevCurrTab.type !== currCurrTab.type ||
-      prevCurrTab.pagination.page !== currCurrTab.pagination.page ||
-      prevCurrTab.tag !== currCurrTab.tag
-    ) {
-      this.fetchData();
-    }
+    // if (!isEqual(prevCurrTab, currCurrTab)) {
+    //   this.fetchData();
+    // }
+    !isEqual(prevCurrTab, currCurrTab) && this.fetchData();
   }
 
   fetchData() {
@@ -34,7 +32,7 @@ class Articles extends Component {
     if (currTab.type === "feed") {
       endpoint = "/api/articles/feed";
     }
-    if (currTab.type === "user") params["user"] = currTab.user;
+    if (currTab.type === "user") params["author"] = currTab.user;
     if (currTab.type === "tag") params["tag"] = currTab.tag;
     return fetchArticles(endpoint, params);
   }

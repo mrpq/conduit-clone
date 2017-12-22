@@ -23,7 +23,7 @@ class Tab extends Component {
   }
 
   handleTabClick() {
-    const { dispatch, type = "global", user = {}, tag = "" } = this.props;
+    const { dispatch, type = "global", user = "", tag = "" } = this.props;
     dispatch(setCurrTab({ type, user, tag }));
   }
 

@@ -1,6 +1,7 @@
 import { createAction } from "redux-actions";
 import axios from "axios";
-import { getUsername } from "../reducers/user";
+
+import { getUsername } from "../reducers/";
 
 import {
   USER_LOGIN_REQUEST,
@@ -10,6 +11,12 @@ import {
   USER_FETCH_REQUEST,
   USER_FETCH_SUCCESS,
   USER_FETCH_FAILURE,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAILURE,
+  PROFILE_FETCH_REQUEST,
+  PROFILE_FETCH_SUCCESS,
+  PROFILE_FETCH_FAILURE,
   ARTICLES_FETCH_REQUEST,
   ARTICLES_FETCH_SUCCESS,
   ARTICLES_FETCH_FAILURE,
@@ -32,6 +39,14 @@ export const loginUserFailure = createAction(USER_LOGIN_FAILURE);
 const fetchUserRequest = createAction(USER_FETCH_REQUEST);
 const fetchUserSuccess = createAction(USER_FETCH_SUCCESS);
 
+const updateUserRequest = createAction(USER_UPDATE_REQUEST);
+const updateUserSuccess = createAction(USER_UPDATE_SUCCESS);
+const updateUserFailure = createAction(USER_UPDATE_FAILURE);
+
+const fetchProfileRequest = createAction(PROFILE_FETCH_REQUEST);
+const fetchProfileSuccess = createAction(PROFILE_FETCH_SUCCESS);
+const fetchProfileFailure = createAction(PROFILE_FETCH_FAILURE);
+
 const fetchArticlesSuccess = createAction(ARTICLES_FETCH_SUCCESS);
 
 const publishArticleRequest = createAction(ARTICLE_PUBLISH_REQUEST);
@@ -49,10 +64,11 @@ export const fetchTagsRequest = createAction(TAG_FETCH_REQUEST);
 export const fetchTagsSuccess = createAction(TAG_FETCH_SUCCESS);
 export const fetchTagsFailure = createAction(TAG_FETCH_FAILURE);
 
-const requestAPI = (endpoint, options) => {
-  const BASE_URL = "https://conduit.productionready.io/";
+const requestAPI = (endpoint, options = {}) => {
+  const BASE_URL = "https://conduit.productionready.io";
   const requestOptions = {
     url: `${BASE_URL}${endpoint}`,
+    method: "GET",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -61,23 +77,19 @@ const requestAPI = (endpoint, options) => {
   };
   return axios(requestOptions);
 };
+const withToken = requestAPI => (endpoint, options) => {};
 
 export const loginUser = ({ email, password }) => dispatch => {
   dispatch({
     type: USER_LOGIN_REQUEST
   });
-  return axios({
-    url: "https://conduit.productionready.io/api/users/login",
+  return requestAPI("/api/users/login", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    data: {
-      user: { email, password }
-    }
+    data: { user: { email, password } }
   })
     .then(({ data }) => {
       localStorage.setItem("jwt_token", data.user.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
       return dispatch(loginUserSuccess({ user: data.user }));
     })
     .catch(({ response }) => {
@@ -87,6 +99,7 @@ export const loginUser = ({ email, password }) => dispatch => {
 
 export const logoutUser = () => {
   localStorage.removeItem("jwt_token");
+  localStorage.removeItem("user");
   return { type: USER_LOGOUT_SUCCESS };
 };
 
@@ -98,32 +111,40 @@ export const fetchUser = user => (dispatch, getState) => {
   if (getUsername(getState())) {
     return Promise.resolve();
   }
-  return axios({
-    url: "https://conduit.productionready.io/api/user",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${token}`
-    }
+  return requestAPI("/api/user", {
+    headers: { Authorization: `Token ${token}` }
   })
     .then(({ data }) => {
       return dispatch(fetchUserSuccess({ user: data.user }));
     })
     .catch(error => console.log(error));
 };
+export const updateUser = user => dispatch => {
+  const token = localStorage.getItem("jwt_token");
+  if (!token) {
+    return Promise.resolve(); // fix this shit!
+  }
+  dispatch(updateUserRequest());
+  return requestAPI("/api/user", {
+    method: "PUT",
+    headers: { Authorization: `Token ${token}` },
+    data: { user }
+  })
+    .then(({ data }) => {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      return dispatch(updateUserSuccess({ user: data.user }));
+    })
+    .catch(error => console.log(error));
+};
 
 export const fetchArticles = (endpoint, params) => dispatch => {
-  const headers = {
-    "Content-Type": "application/json"
-  };
+  const headers = {};
   const token = localStorage.getItem("jwt_token");
   if (token) {
     headers.Authorization = `Token ${token}`;
   }
-  return axios({
-    url: `https://conduit.productionready.io${endpoint}`,
-    headers,
-    params
-  }).then(({ data }) => {
+  dispatch(fetchArticleRequest());
+  return requestAPI(endpoint, { headers, params }).then(({ data }) => {
     dispatch(
       fetchArticlesSuccess({
         articles: data.articles,
@@ -133,32 +154,17 @@ export const fetchArticles = (endpoint, params) => dispatch => {
   });
 };
 
-export const publishArticle = ({
-  title,
-  description,
-  body,
-  tagList
-}) => dispatch => {
-  const headers = {
-    "Content-Type": "application/json"
-  };
+export const publishArticle = article => dispatch => {
+  const headers = {};
   const token = localStorage.getItem("jwt_token");
   if (token) {
     headers.Authorization = `Token ${token}`;
   }
   dispatch(publishArticleRequest());
-  return axios({
-    url: "https://conduit.productionready.io/api/articles",
+  requestAPI("/api/articles", {
     method: "POST",
     headers,
-    data: {
-      article: {
-        title,
-        description,
-        body,
-        tagList
-      }
-    }
+    data: { article }
   }).then(({ data }) => {
     dispatch(publishArticleSuccess({ article: data.article }));
     return data.article;
@@ -166,35 +172,22 @@ export const publishArticle = ({
 };
 
 export const fetchArticle = slug => dispatch => {
-  const headers = {
-    "Content-Type": "application/json"
-  };
-  const token = localStorage.getItem("jwt_token");
-  if (token) {
-    headers.Authorization = `Token ${token}`;
-  }
   dispatch(fetchArticleRequest());
-  return axios({
-    url: `https://conduit.productionready.io/api/articles/${slug}`,
-    headers: headers
-  }).then(({ data }) => {
+  requestAPI(`/api/articles/${slug}`).then(({ data }) => {
     return dispatch(fetchArticleSuccess({ article: data.article }));
   });
 };
 
 export const fetchTags = () => dispatch => {
-  const headers = {
-    "Content-Type": "application/json"
-  };
-  const token = localStorage.getItem("jwt_token");
-  if (token) {
-    headers.Authorization = `Token ${token}`;
-  }
   dispatch(fetchTagsRequest());
-  return axios({
-    url: `https://conduit.productionready.io/api/tags`,
-    headers: headers
-  }).then(({ data }) => {
+  return requestAPI("/api/tags").then(({ data }) => {
     return dispatch(fetchTagsSuccess({ tags: data.tags }));
+  });
+};
+
+export const fetchProfile = username => dispatch => {
+  dispatch(fetchProfileRequest());
+  return requestAPI(`/api/profiles/${username}`).then(({ data }) => {
+    return dispatch(fetchProfileSuccess({ profile: data.profile }));
   });
 };

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { fetchUser, fetchTags } from "../actions/";
+import { fetchUser, fetchTags, setCurrTab } from "../actions/";
 import { connect } from "react-redux";
 import Heading from "../Heading/";
 import Articles from "../Articles/";
@@ -15,19 +15,26 @@ import {
 } from "../Layout/";
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    this.setActiveTab();
+  }
   componentDidMount() {
     this.fetchData();
-  }
-  componentWillUpdate() {
-    // this.fetchData();
   }
   fetchData() {
     const { dispatch } = this.props;
     dispatch(fetchTags());
-    return dispatch(fetchUser());
+    dispatch(fetchUser());
+  }
+  setActiveTab() {
+    const { dispatch, username } = this.props;
+    username && dispatch(setCurrTab({ type: "feed", user: username }));
   }
   render() {
-    const { user, currTab } = this.props;
+    const { username, currTab } = this.props;
     const PrivateTab = renderWithAuth(Tab);
     return (
       <Fragment>
@@ -38,7 +45,7 @@ class Home extends Component {
               <TabsContainer>
                 <PrivateTab
                   type="feed"
-                  user={user}
+                  user={username}
                   isActive={currTab.type === "feed"}
                 >
                   Your Feed
@@ -65,10 +72,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    user: getUsername(state),
+  const mapping = {
     currTab: getCurrTab(state)
   };
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) mapping.username = user.username;
+  return mapping;
 };
 
 Home = connect(mapStateToProps)(Home);

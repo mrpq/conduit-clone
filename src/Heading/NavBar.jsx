@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { getUsername, getIsAuthenticated } from "../reducers/";
+import { getUsername, getIsUpdated } from "../reducers/";
 import { logoutUser } from "../actions/";
 import renderWithAuth from "../RenderWithAuthHOC";
 
@@ -45,6 +45,10 @@ const NavBarContainer = styled.ul`
 `;
 
 class NavBar extends Component {
+  shouldComponentUpdate(nextProps) {
+    const { isUpdated } = nextProps;
+    return isUpdated;
+  }
   render() {
     const { username, dispatch } = this.props;
     return (
@@ -77,10 +81,12 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    username: getUsername(state),
-    isAuthenticated: getIsAuthenticated(state)
+  const mapping = {
+    isUpdated: getIsUpdated(state)
   };
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) mapping.username = user.username;
+  return mapping;
 };
 
 NavBar = connect(mapStateToProps)(NavBar);

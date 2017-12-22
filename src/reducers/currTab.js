@@ -46,12 +46,21 @@ const tag = (state = "", action) => {
       return state;
   }
 };
+const isFavourited = (state = false, action) => {
+  switch (action.type) {
+    case CURR_TAB_SET:
+      return action.payload.isFavourited || false;
+    default:
+      return state;
+  }
+};
 
 const currTab = combineReducers({
   type,
   user,
   pagination,
-  tag
+  tag,
+  isFavourited
 });
 
 export default currTab;

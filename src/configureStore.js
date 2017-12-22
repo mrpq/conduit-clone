@@ -5,7 +5,15 @@ import { routerMiddleware } from "react-router-redux";
 import { routerReducer } from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 
-import { auth, user, articles, currArticle, currTab, tags } from "./reducers/";
+import {
+  auth,
+  user,
+  articles,
+  currArticle,
+  currTab,
+  tags,
+  currProfile
+} from "./reducers/";
 
 export const history = createHistory();
 const rootReducer = combineReducers({
@@ -15,6 +23,7 @@ const rootReducer = combineReducers({
   currArticle,
   currTab,
   tags,
+  currProfile,
   router: routerReducer
 });
 

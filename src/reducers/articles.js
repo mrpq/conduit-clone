@@ -14,7 +14,6 @@ const articles = (
       return { ...state, isFetching: true };
     case ARTICLES_FETCH_SUCCESS:
       return {
-        ...state,
         isFetching: false,
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount
