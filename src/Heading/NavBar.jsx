@@ -49,6 +49,7 @@ class NavBar extends Component {
     const { isUpdated } = nextProps;
     return isUpdated;
   }
+  componentDidUpdate() {}
   render() {
     const { username, dispatch } = this.props;
     return (

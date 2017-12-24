@@ -3,12 +3,16 @@ import { combineReducers } from "redux";
 import {
   PROFILE_FETCH_REQUEST,
   PROFILE_FETCH_SUCCESS,
-  PROFILE_FETCH_FAILURE
+  PROFILE_FETCH_FAILURE,
+  PROFILE_FOLLOW_REQUEST,
+  PROFILE_FOLLOW_SUCCESS,
+  PROFILE_FOLLOW_FAILURE
 } from "../actions/constants";
 
 const profile = (state = {}, action) => {
   switch (action.type) {
     case PROFILE_FETCH_SUCCESS:
+    case PROFILE_FOLLOW_SUCCESS:
       return action.payload.profile;
     default:
       return state;
@@ -17,7 +21,10 @@ const profile = (state = {}, action) => {
 const isFetching = (state = true, action) => {
   switch (action.type) {
     case PROFILE_FETCH_REQUEST:
+    case PROFILE_FOLLOW_REQUEST:
       return true;
+    case PROFILE_FOLLOW_SUCCESS:
+    case PROFILE_FOLLOW_FAILURE:
     case PROFILE_FETCH_SUCCESS:
     case PROFILE_FETCH_FAILURE:
       return false;

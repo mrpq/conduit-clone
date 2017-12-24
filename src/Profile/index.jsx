@@ -4,19 +4,27 @@ import isEmpty from "lodash/isEmpty";
 
 import Heading from "../Heading/";
 import Articles from "../Articles";
+import UserInfo from "./UserInfo";
 import { TabsContainer, Tab } from "../Tabs/";
 import { UniversalContainer } from "../Layout/";
 import { fetchProfile, setCurrTab } from "../actions/";
 import { getCurrProfile } from "../reducers/";
 import { getCurrTab } from "../reducers/currTab";
 
-let c = 1;
-
 class Profile extends Component {
   componentDidMount() {
     const { dispatch, match: { params: { username } } } = this.props;
     dispatch(setCurrTab({ type: "user", user: username }));
     this.fetchData(dispatch, username);
+  }
+  componentWillReceiveProps(nextProps) {
+    const { dispatch } = this.props;
+    if (this.props.user !== nextProps.match.params.username) {
+      dispatch(
+        setCurrTab({ type: "user", user: nextProps.match.params.username })
+      );
+      this.fetchData(dispatch, nextProps.match.params.username);
+    }
   }
   fetchData(dispatch, username) {
     return dispatch(fetchProfile(username));
@@ -36,10 +44,11 @@ class Profile extends Component {
     );
   }
   render() {
+    const { profile } = this.props;
     return (
       <Fragment>
         <Heading />
-
+        <UserInfo profile={profile} />
         {this.renderArticles()}
       </Fragment>
     );

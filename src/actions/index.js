@@ -17,6 +17,9 @@ import {
   PROFILE_FETCH_REQUEST,
   PROFILE_FETCH_SUCCESS,
   PROFILE_FETCH_FAILURE,
+  PROFILE_FOLLOW_REQUEST,
+  PROFILE_FOLLOW_SUCCESS,
+  PROFILE_FOLLOW_FAILURE,
   ARTICLES_FETCH_REQUEST,
   ARTICLES_FETCH_SUCCESS,
   ARTICLES_FETCH_FAILURE,
@@ -46,6 +49,10 @@ const updateUserFailure = createAction(USER_UPDATE_FAILURE);
 const fetchProfileRequest = createAction(PROFILE_FETCH_REQUEST);
 const fetchProfileSuccess = createAction(PROFILE_FETCH_SUCCESS);
 const fetchProfileFailure = createAction(PROFILE_FETCH_FAILURE);
+
+const followProfileRequest = createAction(PROFILE_FOLLOW_REQUEST);
+const followProfileSuccess = createAction(PROFILE_FOLLOW_SUCCESS);
+const followProfileFailure = createAction(PROFILE_FOLLOW_FAILURE);
 
 const fetchArticlesSuccess = createAction(ARTICLES_FETCH_SUCCESS);
 
@@ -186,8 +193,24 @@ export const fetchTags = () => dispatch => {
 };
 
 export const fetchProfile = username => dispatch => {
+  console.log("fetch profile!");
   dispatch(fetchProfileRequest());
   return requestAPI(`/api/profiles/${username}`).then(({ data }) => {
     return dispatch(fetchProfileSuccess({ profile: data.profile }));
+  });
+};
+
+export const followProfile = (username, follow = true) => dispatch => {
+  const headers = {};
+  const token = localStorage.getItem("jwt_token");
+  if (token) {
+    headers.Authorization = `Token ${token}`;
+  }
+  dispatch(followProfileRequest());
+  return requestAPI(`/api/profiles/${username}/follow`, {
+    method: follow ? "POST" : "DELETE",
+    headers
+  }).then(({ data }) => {
+    return dispatch(followProfileSuccess({ profile: data.profile }));
   });
 };
