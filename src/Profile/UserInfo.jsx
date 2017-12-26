@@ -48,7 +48,7 @@ const FollowButton = ({ onButtonClick, children, disabled }) => {
 let FollowBlock = ({ profile, dispatch, isFetching }) => {
   const { username, following } = profile;
   const self = JSON.parse(localStorage.getItem("user"));
-  if (self.username === username) {
+  if (self && self.username === username) {
     return (
       <FollowButton onButtonClick={() => dispatch(push("/settings"))}>
         Edit profile settings

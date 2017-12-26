@@ -42,3 +42,7 @@ export const makeGetArticle = () => {
 export const getArticlesCount = state => {
   return state.articlesCount;
 };
+
+export const getIsArticlesFetching = state => state.isFetching;
+
+export const getErrors = state => state.errors;

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { getUsername, getIsUpdated } from "../reducers/";
-import { logoutUser } from "../actions/";
-import renderWithAuth from "../RenderWithAuthHOC";
+import { getUsername, getIsUserUpdated } from "../reducers/";
+import { logoutUser, setCurrTab } from "../actions/";
+import { withAuth } from "../RenderWithAuthHOC";
 
 const NavBarItem = props => {
   const { children, to, dispatch, action } = props;
@@ -31,8 +31,8 @@ const NavBarItem = props => {
   );
 };
 
-const PrivateNavBarItem = renderWithAuth(NavBarItem);
-const PublicNavBarItem = renderWithAuth(NavBarItem, false);
+const PrivateNavBarItem = withAuth(NavBarItem, { authRequired: true });
+const PublicNavBarItem = withAuth(NavBarItem, { authRequired: false });
 
 const NavBarContainer = styled.ul`
   display: flex;
@@ -50,29 +50,28 @@ class NavBar extends Component {
     return isUpdated;
   }
   componentDidUpdate() {}
+
   render() {
-    const { username, dispatch } = this.props;
+    console.log("hello");
+    const { dispatch } = this.props;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const username = user && user.username;
     return (
       <NavBarContainer>
         <NavBarItem to="/" dispatch={dispatch}>
           Home
         </NavBarItem>
-        <PrivateNavBarItem to="/editor" dispatch={dispatch}>
-          New Article
-        </PrivateNavBarItem>
-        <PrivateNavBarItem to="/settings" dispatch={dispatch}>
-          Settings
-        </PrivateNavBarItem>
-        <PrivateNavBarItem to={`/@${username}`} dispatch={dispatch}>
-          {username}
-        </PrivateNavBarItem>
-        <PublicNavBarItem to="/login" dispatch={dispatch}>
-          Login
-        </PublicNavBarItem>
+        <PrivateNavBarItem to="/editor">New Article</PrivateNavBarItem>
+        <PrivateNavBarItem to="/settings">Settings</PrivateNavBarItem>
+        <PrivateNavBarItem to={`/@${username}`}>{username}</PrivateNavBarItem>
+        <PublicNavBarItem to="/login">Login</PublicNavBarItem>
         <PrivateNavBarItem
           to="/"
           dispatch={dispatch}
-          action={() => dispatch(logoutUser())}
+          action={() => {
+            dispatch(setCurrTab({ type: "global" }));
+            dispatch(logoutUser());
+          }}
         >
           Logout
         </PrivateNavBarItem>
@@ -82,12 +81,9 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const mapping = {
-    isUpdated: getIsUpdated(state)
+  return {
+    isUpdated: getIsUserUpdated(state)
   };
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user) mapping.username = user.username;
-  return mapping;
 };
 
 NavBar = connect(mapStateToProps)(NavBar);

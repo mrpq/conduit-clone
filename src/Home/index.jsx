@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import Heading from "../Heading/";
 import Articles from "../Articles/";
 import Tags from "../Tags/";
-import { TabsContainer, Tab } from "../Tabs/";
+import HomeTabs from "./HomeTabs";
 import { getCurrTab, getUsername } from "../reducers/";
-import renderWithAuth from "../RenderWithAuthHOC";
+// import renderWithAuth from "../RenderWithAuthHOC";
 import {
   TwoColumnsContainer,
   LeftColumn,
@@ -18,11 +18,13 @@ class Home extends Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    this.setActiveTab();
-  }
   componentDidMount() {
+    this.setActiveTab();
     this.fetchData();
+  }
+  componentDidUpdate(prevProps) {
+    // this.setActiveTab();
+    // this.fetchData();
   }
   fetchData() {
     const { dispatch } = this.props;
@@ -34,31 +36,13 @@ class Home extends Component {
     username && dispatch(setCurrTab({ type: "feed", user: username }));
   }
   render() {
-    const { username, currTab } = this.props;
-    const PrivateTab = renderWithAuth(Tab);
     return (
       <Fragment>
         <Heading />
         <UniversalContainer>
           <TwoColumnsContainer>
             <LeftColumn>
-              <TabsContainer>
-                <PrivateTab
-                  type="feed"
-                  user={username}
-                  isActive={currTab.type === "feed"}
-                >
-                  Your Feed
-                </PrivateTab>
-                <Tab type="global" isActive={currTab.type === "global"}>
-                  Global Feed
-                </Tab>
-                {currTab.tag ? (
-                  <Tab type="tag" isActive={currTab.type === "tag"}>{`#${
-                    currTab.tag
-                  }`}</Tab>
-                ) : null}
-              </TabsContainer>
+              <HomeTabs {...this.props} />
               <Articles />
             </LeftColumn>
             <RightColumn>

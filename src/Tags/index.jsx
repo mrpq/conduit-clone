@@ -35,6 +35,7 @@ const Tag = styled.li`
   border-radius: 9px;
   background-color: #808a90;
   color: #fff;
+  cursor: pointer;
 `;
 
 class Tags extends Component {

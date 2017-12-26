@@ -63,10 +63,11 @@ class Editor extends Component {
         body: this.state.body,
         tagList: this.state.tagList.split(",")
       })
-    ).then(({ slug }) => {
-      console.log(slug);
-      dispatch(push(`/article/${slug}`));
-    });
+    );
+    // .then(({ slug }) => {
+    //   console.log(slug);
+    //   dispatch(push(`/article/${slug}`));
+    // });
   };
 
   render() {
@@ -74,29 +75,33 @@ class Editor extends Component {
       <Fragment>
         <Heading />
         <UniversalContainer>
-          <form onChange={this.handleChange}>
+          <form>
             <LargeInput
               type="text"
               name="title"
               placeholder="Article Title"
               value={this.state.title}
+              onChange={this.handleChange}
             />
             <SmallInput
               type="text"
               name="description"
               placeholder="What's this article about?"
               value={this.state.description}
+              onChange={this.handleChange}
             />
             <Textarea
               name="body"
               value={this.state.body}
               placeholder="What's this article about?"
+              onChange={this.handleChange}
             />
             <SmallInput
               type="text"
               name="tagList"
               value={this.state.tagList}
               placeholder="Enter tags"
+              onChange={this.handleChange}
             />
             <div style={{ textAlign: "right" }}>
               <SubmitButton onClick={this.handleSubmit}>
@@ -110,6 +115,6 @@ class Editor extends Component {
   }
 }
 
-Editor = connect()(Editor);
+// Editor = connect()(Editor);
 
 export default Editor;

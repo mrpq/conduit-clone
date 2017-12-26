@@ -8,7 +8,7 @@ import {
 const auth = (
   state = {
     isAuthenticated: localStorage.getItem("jwt_token") ? true : false,
-    isFetching: true
+    isFetching: false
   },
   action
 ) => {
@@ -22,7 +22,7 @@ const auth = (
       const errors = action.payload.errors;
       return { ...state, isFetching: false, errors };
     case USER_LOGOUT_SUCCESS:
-      return { ...state, isAuthenticated: false };
+      return { isAuthenticated: false, isFetching: false };
     default:
       return state;
   }

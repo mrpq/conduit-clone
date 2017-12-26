@@ -54,7 +54,9 @@ const followProfileRequest = createAction(PROFILE_FOLLOW_REQUEST);
 const followProfileSuccess = createAction(PROFILE_FOLLOW_SUCCESS);
 const followProfileFailure = createAction(PROFILE_FOLLOW_FAILURE);
 
+const fetchArticlesRequest = createAction(ARTICLES_FETCH_REQUEST);
 const fetchArticlesSuccess = createAction(ARTICLES_FETCH_SUCCESS);
+const fetchArticlesFailure = createAction(ARTICLES_FETCH_FAILURE);
 
 const publishArticleRequest = createAction(ARTICLE_PUBLISH_REQUEST);
 const publishArticleSuccess = createAction(ARTICLE_PUBLISH_SUCCESS);
@@ -150,7 +152,7 @@ export const fetchArticles = (endpoint, params) => dispatch => {
   if (token) {
     headers.Authorization = `Token ${token}`;
   }
-  dispatch(fetchArticleRequest());
+  dispatch(fetchArticlesRequest());
   return requestAPI(endpoint, { headers, params }).then(({ data }) => {
     dispatch(
       fetchArticlesSuccess({

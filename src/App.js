@@ -12,6 +12,8 @@ import Settings from "./Settings/";
 import Article from "./Article/";
 import Profile from "./Profile/";
 
+import { withAuth } from "./RenderWithAuthHOC";
+
 import configureStore, { history } from "./configureStore";
 
 class App extends Component {
@@ -23,8 +25,14 @@ class App extends Component {
           <div>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
-            <Route path="/editor" component={Editor} />
-            <Route path="/settings" component={Settings} />
+            <Route
+              path="/editor"
+              component={withAuth(Editor, { redirectTo: "/" })}
+            />
+            <Route
+              path="/settings"
+              component={withAuth(Settings, { redirectTo: "/login" })}
+            />
             <Route path="/article/:slug" component={Article} />
             <Route path="/@:username" component={Profile} />
           </div>

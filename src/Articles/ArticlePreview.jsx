@@ -7,6 +7,9 @@ const Article = styled.article`
   padding-top: 24px;
   padding-bottom: 24px;
   border-top: 1px solid #b2b2b2;
+  &:first-of-type {
+    border: none;
+  }
 `;
 const Header = styled.header`
   display: flex;
@@ -14,16 +17,20 @@ const Header = styled.header`
 const Avatar = styled.div`
   width: 34px;
   height: 34px;
-  background: url("https://static.productionready.io/images/smiley-cyrus.jpg");
+  background: ${({ image }) =>
+    image
+      ? `url("${image}")`
+      : `url("https://static.productionready.io/images/smiley-cyrus.jpg")`};
   background-size: contain;
   border-radius: 50%;
 `;
 const Meta = styled.div`
   margin-left: 5px;
 `;
-const Author = styled.div`
+const Author = styled.a`
   color: #4fb862;
   line-height: 1em;
+  text-decoration: none;
 `;
 const PublishDate = styled.div`
   font-size: 0.75rem;
@@ -49,7 +56,7 @@ const Link = styled.a`
   font-size: 0.75em;
 `;
 
-const ArticlePreview = ({ article, onArticleClick }) => {
+const ArticlePreview = ({ article, onArticleClick, onAuthorClick }) => {
   const {
     author,
     slug,
@@ -64,9 +71,17 @@ const ArticlePreview = ({ article, onArticleClick }) => {
   return (
     <Article>
       <Header>
-        <Avatar />
+        <Avatar image={author.image} />
         <Meta>
-          <Author>{author.username}</Author>
+          <Author
+            href={`${author.username}`}
+            onClick={e => {
+              e.preventDefault();
+              onAuthorClick(author.username);
+            }}
+          >
+            {author.username}
+          </Author>
           <PublishDate>
             {DateTime.fromISO(createdAt).toLocaleString()}
           </PublishDate>

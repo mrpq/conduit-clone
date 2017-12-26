@@ -26,6 +26,14 @@ export const getArticlesCount = state => {
   return fromArticles.getArticlesCount(state.articles);
 };
 
+export const getIsArticlesFetching = state => {
+  return fromArticles.getIsArticlesFetching(state.articles);
+};
+
+export const getFetchArticlesErrors = state => {
+  return fromArticles.getErrors(state.articles);
+};
+
 export const getIsAuthenticated = state => {
   return fromAuth.getIsAuthenticated(state.auth);
 };
@@ -40,8 +48,8 @@ export const getIsCurrArticleFetching = state => {
 export const getUsername = state => {
   return fromUser.getUsername(state.user);
 };
-export const getIsUpdated = state => {
-  return fromUser.getIsUpdated(state.user);
+export const getIsUserUpdated = state => {
+  return fromUser.getIsUserUpdated(state.user);
 };
 
 export const getCurrTab = state => {

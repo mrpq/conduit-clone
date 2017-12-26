@@ -9,24 +9,30 @@ import { TabsContainer, Tab } from "../Tabs/";
 import { UniversalContainer } from "../Layout/";
 import { fetchProfile, setCurrTab } from "../actions/";
 import { getCurrProfile } from "../reducers/";
-import { getCurrTab } from "../reducers/currTab";
+import { getCurrTab } from "../reducers/";
 
 class Profile extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     const { dispatch, match: { params: { username } } } = this.props;
     dispatch(setCurrTab({ type: "user", user: username }));
-    this.fetchData(dispatch, username);
   }
-  componentWillReceiveProps(nextProps) {
-    const { dispatch } = this.props;
-    if (this.props.user !== nextProps.match.params.username) {
-      dispatch(
-        setCurrTab({ type: "user", user: nextProps.match.params.username })
-      );
-      this.fetchData(dispatch, nextProps.match.params.username);
+
+  componentDidMount() {
+    const { dispatch, match: { params: { username } } } = this.props;
+
+    this.fetchData(username);
+  }
+  componentDidUpdate(prevProps) {
+    const { dispatch, match: { params: { username } } } = this.props;
+    const { match: { params: { username: prevUsername } } } = prevProps;
+    if (username != prevUsername) {
+      dispatch(setCurrTab({ type: "user", user: username }));
+      this.fetchData(username);
     }
   }
-  fetchData(dispatch, username) {
+  fetchData(username) {
+    const { dispatch } = this.props;
     return dispatch(fetchProfile(username));
   }
   renderArticles() {
@@ -35,7 +41,11 @@ class Profile extends Component {
     return (
       <UniversalContainer>
         <TabsContainer>
-          <Tab type="user" isActive={currTab.type === "user"}>
+          <Tab
+            type="user"
+            isActive={currTab.type === "user"}
+            user={profile.username}
+          >
             My Articles
           </Tab>
         </TabsContainer>
@@ -58,8 +68,7 @@ class Profile extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     profile: getCurrProfile(state),
-    currTab: getCurrTab(state),
-    user: ownProps.match.params.username
+    currTab: getCurrTab(state)
   };
 };
 

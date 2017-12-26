@@ -5,7 +5,7 @@ import { push } from "react-router-redux";
 import isEqual from "lodash/isEqual";
 import { fetchArticles, fetchArticle } from "../actions/";
 import { getArticles, getCurrTab } from "../reducers/";
-import View from "./View";
+import ArticlesList from "./ArticlesList";
 
 class Articles extends Component {
   componentDidMount() {
@@ -15,14 +15,11 @@ class Articles extends Component {
   componentDidUpdate(prevProps) {
     const { currTab: prevCurrTab } = prevProps;
     const { currTab: currCurrTab } = this.props;
-    // if (!isEqual(prevCurrTab, currCurrTab)) {
-    //   this.fetchData();
-    // }
     !isEqual(prevCurrTab, currCurrTab) && this.fetchData();
   }
 
   fetchData() {
-    const { fetchArticles, currTab } = this.props;
+    const { dispatch, currTab } = this.props;
     const { pagination: { limit, page } } = currTab;
     const params = {
       limit,
@@ -34,12 +31,13 @@ class Articles extends Component {
     }
     if (currTab.type === "user") params["author"] = currTab.user;
     if (currTab.type === "tag") params["tag"] = currTab.tag;
-    return fetchArticles(endpoint, params);
+    return dispatch(fetchArticles(endpoint, params));
   }
 
   render() {
-    const { onArticleClick } = this.props;
-    return <View {...this.props} />;
+    // const { onArticleClick } = this.props;
+    // return <ArticlesList {...this.props} />;
+    return <ArticlesList />;
   }
 }
 
@@ -53,7 +51,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchArticles: (...params) => dispatch(fetchArticles(...params)),
+    // fetchArticles: (...params) => dispatch(fetchArticles(...params)),
     onArticleClick: slug => {
       dispatch(fetchArticle(slug));
       dispatch(push(`/article/${slug}`));
@@ -61,6 +59,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-Articles = connect(mapStateToProps, mapDispatchToProps)(Articles);
+Articles = connect(mapStateToProps)(Articles);
 
 export default Articles;

@@ -4,6 +4,7 @@ const TabsContainer = styled.ul`
   padding: 0;
   display: flex;
   list-style-type: none;
+  border-bottom: 1px solid #b2b2b2;
 `;
 
 export default TabsContainer;
