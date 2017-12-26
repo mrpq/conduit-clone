@@ -19,20 +19,18 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, match: { params: { username } } } = this.props;
-
-    this.fetchData(username);
+    this.fetchData();
   }
   componentDidUpdate(prevProps) {
     const { dispatch, match: { params: { username } } } = this.props;
     const { match: { params: { username: prevUsername } } } = prevProps;
-    if (username != prevUsername) {
+    if (username !== prevUsername) {
       dispatch(setCurrTab({ type: "user", user: username }));
-      this.fetchData(username);
+      this.fetchData();
     }
   }
-  fetchData(username) {
-    const { dispatch } = this.props;
+  fetchData() {
+    const { dispatch, match: { params: { username } } } = this.props;
     return dispatch(fetchProfile(username));
   }
   renderArticles() {

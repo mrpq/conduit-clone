@@ -5,7 +5,6 @@ import { push } from "react-router-redux";
 import ArticlePreview from "./ArticlePreview";
 import Pagination from "./Pagination";
 
-import { fetchArticles, fetchArticle } from "../actions/";
 import {
   getArticles,
   getIsArticlesFetching,

@@ -1,16 +1,19 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import { TabsContainer, Tab } from "../Tabs/";
-import renderWithAuth from "../RenderWithAuthHOC";
+import { getCurrTab } from "../reducers/";
+import { withAuth } from "../RenderWithAuthHOC";
 
 class HomeTabs extends Component {
   render() {
-    const { username, currTab } = this.props;
-    const PrivateTab = renderWithAuth(Tab);
+    const { currTab } = this.props;
+    const PrivateTab = withAuth(Tab, { authRequired: true });
     return (
       <TabsContainer>
         <PrivateTab
           type="feed"
-          user={username}
+          user={currTab.user}
           isActive={currTab.type === "feed"}
         >
           Your Feed
@@ -27,5 +30,11 @@ class HomeTabs extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    currTab: getCurrTab(state)
+  };
+};
+HomeTabs = connect(mapStateToProps)(HomeTabs);
 
 export default HomeTabs;

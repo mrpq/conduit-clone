@@ -36,7 +36,7 @@ class Tab extends Component {
           isActive={isActive}
           disabled={isActive}
         >
-          {this.props.children}
+          {children}
         </FeedButton>
       </li>
     );

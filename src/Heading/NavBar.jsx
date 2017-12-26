@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { getUsername, getIsUserUpdated } from "../reducers/";
+import { getIsUserUpdated } from "../reducers/";
 import { logoutUser, setCurrTab } from "../actions/";
 import { withAuth } from "../RenderWithAuthHOC";
 
@@ -52,7 +52,6 @@ class NavBar extends Component {
   componentDidUpdate() {}
 
   render() {
-    console.log("hello");
     const { dispatch } = this.props;
     const user = JSON.parse(localStorage.getItem("user"));
     const username = user && user.username;

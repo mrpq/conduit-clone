@@ -75,7 +75,7 @@ FollowBlock = connect(mapStateToProps)(FollowBlock);
 
 class UserInfo extends Component {
   render() {
-    const { profile, isSelf } = this.props;
+    const { profile } = this.props;
     if (isEmpty(profile)) return null;
     return (
       <InfoContainer>

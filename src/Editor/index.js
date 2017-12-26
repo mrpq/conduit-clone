@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { push } from "react-router-redux";
 import styled from "styled-components";
 
 import Heading from "../Heading/";
@@ -64,10 +62,6 @@ class Editor extends Component {
         tagList: this.state.tagList.split(",")
       })
     );
-    // .then(({ slug }) => {
-    //   console.log(slug);
-    //   dispatch(push(`/article/${slug}`));
-    // });
   };
 
   render() {

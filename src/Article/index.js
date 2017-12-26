@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import {
-  getArticles,
-  getCurrArticle,
-  getIsCurrArticleFetching
-} from "../reducers/";
+import { getCurrArticle, getIsCurrArticleFetching } from "../reducers/";
 import { fetchArticle } from "../actions";
 
 class Article extends Component {
@@ -30,9 +25,6 @@ class Article extends Component {
     );
   }
 }
-Article.propTypes = {
-  article: PropTypes.object
-};
 
 const mapStateToProps = (state, ownProps) => {
   return {

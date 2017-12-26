@@ -45,7 +45,7 @@ class Pagination extends Component {
   }
 
   handlePageClick = pageNum => e => {
-    e.preventDefault;
+    e.preventDefault();
     const { dispatch } = this.props;
     dispatch(setPage({ page: pageNum }));
   };

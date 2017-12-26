@@ -1,7 +1,7 @@
 import { createAction } from "redux-actions";
 import axios from "axios";
 
-import { getUsername } from "../reducers/";
+// import { getUsername } from "../reducers/";
 
 import {
   USER_LOGIN_REQUEST,
@@ -86,7 +86,14 @@ const requestAPI = (endpoint, options = {}) => {
   };
   return axios(requestOptions);
 };
-const withToken = requestAPI => (endpoint, options) => {};
+const requestAPIWithAuthToken = (endpoint, options) => {
+  const headers = {};
+  const token = localStorage.getItem("jwt_token");
+  if (token) {
+    headers.Authorization = `Token ${token}`;
+  }
+  return requestAPI(endpoint, { ...options, headers });
+};
 
 export const loginUser = ({ email, password }) => dispatch => {
   dispatch({
@@ -112,31 +119,11 @@ export const logoutUser = () => {
   return { type: USER_LOGOUT_SUCCESS };
 };
 
-export const fetchUser = user => (dispatch, getState) => {
-  const token = localStorage.getItem("jwt_token");
-  if (!token) {
-    return Promise.resolve();
-  }
-  if (getUsername(getState())) {
-    return Promise.resolve();
-  }
-  return requestAPI("/api/user", {
-    headers: { Authorization: `Token ${token}` }
-  })
-    .then(({ data }) => {
-      return dispatch(fetchUserSuccess({ user: data.user }));
-    })
-    .catch(error => console.log(error));
-};
 export const updateUser = user => dispatch => {
-  const token = localStorage.getItem("jwt_token");
-  if (!token) {
-    return Promise.resolve(); // fix this shit!
-  }
   dispatch(updateUserRequest());
-  return requestAPI("/api/user", {
+  return requestAPIWithAuthToken("/api/user", {
     method: "PUT",
-    headers: { Authorization: `Token ${token}` },
+    // headers: { Authorization: `Token ${token}` },
     data: { user }
   })
     .then(({ data }) => {
@@ -147,13 +134,8 @@ export const updateUser = user => dispatch => {
 };
 
 export const fetchArticles = (endpoint, params) => dispatch => {
-  const headers = {};
-  const token = localStorage.getItem("jwt_token");
-  if (token) {
-    headers.Authorization = `Token ${token}`;
-  }
   dispatch(fetchArticlesRequest());
-  return requestAPI(endpoint, { headers, params }).then(({ data }) => {
+  return requestAPIWithAuthToken(endpoint, { params }).then(({ data }) => {
     dispatch(
       fetchArticlesSuccess({
         articles: data.articles,
@@ -164,15 +146,9 @@ export const fetchArticles = (endpoint, params) => dispatch => {
 };
 
 export const publishArticle = article => dispatch => {
-  const headers = {};
-  const token = localStorage.getItem("jwt_token");
-  if (token) {
-    headers.Authorization = `Token ${token}`;
-  }
   dispatch(publishArticleRequest());
   requestAPI("/api/articles", {
     method: "POST",
-    headers,
     data: { article }
   }).then(({ data }) => {
     dispatch(publishArticleSuccess({ article: data.article }));
@@ -203,15 +179,9 @@ export const fetchProfile = username => dispatch => {
 };
 
 export const followProfile = (username, follow = true) => dispatch => {
-  const headers = {};
-  const token = localStorage.getItem("jwt_token");
-  if (token) {
-    headers.Authorization = `Token ${token}`;
-  }
   dispatch(followProfileRequest());
   return requestAPI(`/api/profiles/${username}/follow`, {
-    method: follow ? "POST" : "DELETE",
-    headers
+    method: follow ? "POST" : "DELETE"
   }).then(({ data }) => {
     return dispatch(followProfileSuccess({ profile: data.profile }));
   });
