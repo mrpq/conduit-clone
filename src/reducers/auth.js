@@ -2,13 +2,15 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_FAILURE,
   USER_LOGIN_SUCCESS,
-  USER_LOGOUT_SUCCESS
+  USER_LOGOUT_SUCCESS,
+  AUTH_ERRORS_CLEAR
 } from "../actions/constants";
 
 const auth = (
   state = {
     isAuthenticated: localStorage.getItem("jwt_token") ? true : false,
-    isFetching: false
+    isFetching: false,
+    errors: null
   },
   action
 ) => {
@@ -23,6 +25,8 @@ const auth = (
       return { ...state, isFetching: false, errors };
     case USER_LOGOUT_SUCCESS:
       return { isAuthenticated: false, isFetching: false };
+    case AUTH_ERRORS_CLEAR:
+      return { ...state, errors: null };
     default:
       return state;
   }
@@ -31,4 +35,8 @@ export default auth;
 
 export const getIsAuthenticated = state => {
   return state.isAuthenticated;
+};
+
+export const getErrors = state => {
+  return state.errors;
 };

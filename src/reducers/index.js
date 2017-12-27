@@ -40,6 +40,10 @@ export const getIsAuthenticated = state => {
   return fromAuth.getIsAuthenticated(state.auth);
 };
 
+export const getAuthErrors = state => {
+  return fromAuth.getErrors(state.auth);
+};
+
 export const getCurrArticle = state => {
   return fromCurrArticle.getCurrArticle(state.currArticle);
 };

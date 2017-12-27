@@ -7,9 +7,10 @@ import styled from "styled-components";
 import Heading from "../Heading/";
 import { UniversalContainer } from "../Layout/";
 import { LargeInput, SubmitButton } from "../Editor/";
+import Errors from "../Errors/";
 
-import { loginUser } from "../actions/";
-import { getIsAuthenticated } from "../reducers/";
+import { loginUser, clearAuthErrors } from "../actions/";
+import { getIsAuthenticated, getAuthErrors } from "../reducers/";
 
 const H1 = styled.h1`
   margin-top: 0;
@@ -26,8 +27,8 @@ class Login extends Component {
   }
   componentDidMount() {
     this.checkAndRedirect();
+    this.clearErrors();
   }
-
   componentDidUpdate() {
     this.checkAndRedirect();
   }
@@ -35,6 +36,10 @@ class Login extends Component {
   checkAndRedirect() {
     const { dispatch, isAuthenticated } = this.props;
     isAuthenticated && dispatch(push("/"));
+  }
+  clearErrors() {
+    const { dispatch, isAuthenticated } = this.props;
+    dispatch(clearAuthErrors());
   }
 
   handleChange = e => {
@@ -51,12 +56,14 @@ class Login extends Component {
   };
 
   render() {
+    const { errors } = this.props;
     return (
       <Fragment>
         <Heading />
         <UniversalContainer>
           <H1>Sign in</H1>
-          <div className="App">
+          {errors ? <Errors errors={errors} /> : null}
+          <div>
             <LargeInput
               type="email"
               name="email"
@@ -80,7 +87,10 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return { isAuthenticated: getIsAuthenticated(state) };
+  return {
+    isAuthenticated: getIsAuthenticated(state),
+    errors: getAuthErrors(state)
+  };
 };
 
 Login = connect(mapStateToProps)(Login);

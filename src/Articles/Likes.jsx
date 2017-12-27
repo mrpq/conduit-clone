@@ -36,9 +36,8 @@ class Likes extends Component {
 
   handleClick() {
     const { isAuthenticated, dispatch, slug, favorited } = this.props;
-    console.log(favorited);
-    if (!isAuthenticated) dispatch(push("/login"));
-    dispatch(toggleLike(slug, favorited));
+    if (!isAuthenticated) return dispatch(push("/login"));
+    return dispatch(toggleLike(slug, favorited));
   }
 
   render() {

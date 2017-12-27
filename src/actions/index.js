@@ -36,7 +36,8 @@ import {
   TAG_FETCH_FAILURE,
   LIKE_TOGGLE_REQUEST,
   LIKE_TOGGLE_SUCCESS,
-  LIKE_TOGGLE_FAILURE
+  LIKE_TOGGLE_FAILURE,
+  AUTH_ERRORS_CLEAR
 } from "./constants";
 
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
@@ -79,6 +80,8 @@ export const fetchTagsFailure = createAction(TAG_FETCH_FAILURE);
 export const toggleLikeRequest = createAction(LIKE_TOGGLE_REQUEST);
 export const toggleLikeSuccess = createAction(LIKE_TOGGLE_SUCCESS);
 export const toggleLikeFailure = createAction(LIKE_TOGGLE_FAILURE);
+
+export const clearAuthErrors = createAction(AUTH_ERRORS_CLEAR);
 
 const requestAPI = (endpoint, options = {}) => {
   const BASE_URL = "https://conduit.productionready.io";
@@ -187,7 +190,7 @@ export const fetchProfile = username => dispatch => {
 
 export const followProfile = (username, follow = true) => dispatch => {
   dispatch(followProfileRequest());
-  return requestAPI(`/api/profiles/${username}/follow`, {
+  return requestAPIWithAuthToken(`/api/profiles/${username}/follow`, {
     method: follow ? "POST" : "DELETE"
   }).then(({ data }) => {
     return dispatch(followProfileSuccess({ profile: data.profile }));
