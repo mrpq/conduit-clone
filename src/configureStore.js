@@ -12,7 +12,8 @@ import {
   currArticle,
   currTab,
   tags,
-  currProfile
+  currProfile,
+  toggleLikeRequest
 } from "./reducers/";
 
 export const history = createHistory();
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   currTab,
   tags,
   currProfile,
+  toggleLikeRequest,
   router: routerReducer
 });
 

@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-
 import { DateTime } from "luxon";
+
+import Likes from "./Likes";
 
 const Article = styled.article`
   padding-top: 24px;
@@ -36,18 +37,18 @@ const PublishDate = styled.div`
   font-size: 0.75rem;
   color: #b2b2b2;
 `;
-const LikesWrapper = styled.div`
-  flex-grow: 1;
-  text-align: right;
-`;
-const Likes = styled.div`
-  display: inline-block;
-  padding: 3px 5px;
-  border: 1px solid #4fb862;
-  border-radius: 3px;
-  font-size: 0.75em;
-  color: #4fb862;
-`;
+// const LikesWrapper = styled.div`
+//   flex-grow: 1;
+//   text-align: right;
+// `;
+// const Likes = styled.div`
+//   display: inline-block;
+//   padding: 3px 5px;
+//   border: 1px solid #4fb862;
+//   border-radius: 3px;
+//   font-size: 0.75em;
+//   color: #4fb862;
+// `;
 const Title = styled.h2``;
 const Preview = styled.p``;
 const Link = styled.a`
@@ -63,7 +64,7 @@ const ArticlePreview = ({ article, onArticleClick, onAuthorClick }) => {
     tagList,
     createdAt,
     title,
-    favourited,
+    favorited,
     favoritesCount,
     body,
     description
@@ -86,9 +87,14 @@ const ArticlePreview = ({ article, onArticleClick, onAuthorClick }) => {
             {DateTime.fromISO(createdAt).toLocaleString()}
           </PublishDate>
         </Meta>
-        <LikesWrapper>
+        <Likes
+          slug={slug}
+          favorited={favorited}
+          favoritesCount={favoritesCount}
+        />
+        {/* <LikesWrapper>
           <Likes>&hearts;{`${favoritesCount}`}</Likes>
-        </LikesWrapper>
+        </LikesWrapper> */}
       </Header>
       <Title>{title}</Title>
       <Preview>

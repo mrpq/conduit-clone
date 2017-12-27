@@ -33,7 +33,10 @@ import {
   PAGE_SET,
   TAG_FETCH_REQUEST,
   TAG_FETCH_SUCCESS,
-  TAG_FETCH_FAILURE
+  TAG_FETCH_FAILURE,
+  LIKE_TOGGLE_REQUEST,
+  LIKE_TOGGLE_SUCCESS,
+  LIKE_TOGGLE_FAILURE
 } from "./constants";
 
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
@@ -72,6 +75,10 @@ export const setPage = createAction(PAGE_SET);
 export const fetchTagsRequest = createAction(TAG_FETCH_REQUEST);
 export const fetchTagsSuccess = createAction(TAG_FETCH_SUCCESS);
 export const fetchTagsFailure = createAction(TAG_FETCH_FAILURE);
+
+export const toggleLikeRequest = createAction(LIKE_TOGGLE_REQUEST);
+export const toggleLikeSuccess = createAction(LIKE_TOGGLE_SUCCESS);
+export const toggleLikeFailure = createAction(LIKE_TOGGLE_FAILURE);
 
 const requestAPI = (endpoint, options = {}) => {
   const BASE_URL = "https://conduit.productionready.io";
@@ -185,4 +192,11 @@ export const followProfile = (username, follow = true) => dispatch => {
   }).then(({ data }) => {
     return dispatch(followProfileSuccess({ profile: data.profile }));
   });
+};
+
+export const toggleLike = (slug, favourited) => dispatch => {
+  dispatch(toggleLikeRequest());
+  return requestAPIWithAuthToken(`/api/articles/${slug}/favorite`, {
+    method: favourited ? "DELETE" : "POST"
+  }).then(({ data }) => dispatch(toggleLikeSuccess({ article: data.article })));
 };

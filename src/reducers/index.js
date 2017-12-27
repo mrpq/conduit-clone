@@ -5,6 +5,7 @@ import * as fromCurrArticle from "./currArticle";
 import * as fromCurrTab from "./currTab";
 import * as fromTags from "./tags";
 import * as fromCurrProfile from "./currProfile";
+import * as fromToggleLikeRequest from "./toggleLikeRequest";
 
 export { default as articles } from "./articles";
 export { default as auth } from "./auth";
@@ -13,6 +14,7 @@ export { default as currTab } from "./currTab";
 export { default as user } from "./user";
 export { default as tags } from "./tags";
 export { default as currProfile } from "./currProfile";
+export { default as toggleLikeRequest } from "./toggleLikeRequest";
 
 export const getArticles = state => {
   return fromArticles.getArticles(state.articles);
@@ -65,4 +67,10 @@ export const getCurrProfile = state => {
 };
 export const getIsCurrProfileFetching = state => {
   return fromCurrProfile.getIsCurrProfileFetching(state.currProfile);
+};
+
+export const getIsToggleLikeRequestPending = state => {
+  return fromToggleLikeRequest.getIsToggleLikeRequestPending(
+    state.toggleLikeRequest
+  );
 };

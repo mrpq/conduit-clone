@@ -2,8 +2,19 @@ import { createSelector } from "reselect";
 import {
   ARTICLES_FETCH_REQUEST,
   ARTICLES_FETCH_SUCCESS,
-  ARTICLES_FETCH_FAILURE
+  ARTICLES_FETCH_FAILURE,
+  LIKE_TOGGLE_SUCCESS
 } from "../actions/constants";
+
+const updateStateWithArticle = (state, article) => {
+  return {
+    ...state,
+    articles: state.articles.map(a => {
+      if (a.slug === article.slug) return article;
+      return a;
+    })
+  };
+};
 
 const articles = (
   state = { articles: [], isFetching: true, articlesCount: 0 },
@@ -18,10 +29,12 @@ const articles = (
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount
       };
-    default:
-      return state;
     case ARTICLES_FETCH_FAILURE:
       return { ...state, isFetching: false, errors: action.payload.errors };
+    case LIKE_TOGGLE_SUCCESS:
+      return updateStateWithArticle(state, action.payload.article);
+    default:
+      return state;
   }
 };
 export default articles;
