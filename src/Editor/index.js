@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 
 import Heading from "../Heading/";
+import Errors from "../Errors/";
 import {
   LargeInput,
   SmallInput,
@@ -9,35 +11,8 @@ import {
   Textarea
 } from "../common/inputs";
 import { MainContainer } from "../common/containers";
-import { publishArticle } from "../actions";
-
-// export const LargeInput = styled.input`
-//   display: block;
-//   width: 100%;
-//   margin-bottom: 1rem;
-//   padding: 12px 24px;
-//   border: 1px solid #b2b2b2;
-//   border-radius: 5px;
-//   font-size: 1.25em;
-//   line-height: 1.25;
-//   color: #54595b;
-// `;
-// export const SmallInput = LargeInput.extend`
-//   padding: 8px 12px;
-//   font-size: 1em;
-// `;
-// export const Textarea = SmallInput.extend`
-//   resize: vertical;
-// `.withComponent("textarea");
-
-// export const SubmitButton = styled.button`
-//   margin-left: auto;
-//   padding: 12px 24px;
-//   font-size: 1.25em;
-//   border-radius: 5px;
-//   background-color: #4fb862;
-//   color: #fff;
-// `;
+import { publishArticle, clearEditorErrors } from "../actions/";
+import { getCurrArticleErrors, getArticleIsPublishing } from "../reducers/";
 
 class Editor extends Component {
   constructor(props) {
@@ -48,7 +23,9 @@ class Editor extends Component {
       body: "",
       tagList: ""
     };
+    this.clearErrors();
   }
+  componentDidMount() {}
 
   handleChange = e => {
     const { target: { value, name } } = e;
@@ -70,11 +47,18 @@ class Editor extends Component {
     );
   };
 
+  clearErrors() {
+    const { dispatch } = this.props;
+    dispatch(clearEditorErrors());
+  }
+
   render() {
+    const { isPublishing, errors } = this.props;
     return (
       <Fragment>
         <Heading />
         <MainContainer>
+          {errors ? <Errors errors={errors} /> : null}
           <form>
             <LargeInput
               type="text"
@@ -82,6 +66,7 @@ class Editor extends Component {
               placeholder="Article Title"
               value={this.state.title}
               onChange={this.handleChange}
+              disabled={isPublishing}
             />
             <SmallInput
               type="text"
@@ -89,12 +74,14 @@ class Editor extends Component {
               placeholder="What's this article about?"
               value={this.state.description}
               onChange={this.handleChange}
+              disabled={isPublishing}
             />
             <Textarea
               name="body"
               value={this.state.body}
-              placeholder="What's this article about?"
+              placeholder="Write your article (in markdown)"
               onChange={this.handleChange}
+              disabled={isPublishing}
             />
             <SmallInput
               type="text"
@@ -102,9 +89,10 @@ class Editor extends Component {
               value={this.state.tagList}
               placeholder="Enter tags"
               onChange={this.handleChange}
+              disabled={isPublishing}
             />
             <div style={{ textAlign: "right" }}>
-              <SubmitButton onClick={this.handleSubmit}>
+              <SubmitButton onClick={this.handleSubmit} disabled={isPublishing}>
                 Publish Article
               </SubmitButton>
             </div>
@@ -115,6 +103,13 @@ class Editor extends Component {
   }
 }
 
-// Editor = connect()(Editor);
+const mapStateToProps = state => {
+  return {
+    errors: getCurrArticleErrors(state),
+    isPublishing: getArticleIsPublishing(state)
+  };
+};
+
+Editor = connect(mapStateToProps)(Editor);
 
 export default Editor;

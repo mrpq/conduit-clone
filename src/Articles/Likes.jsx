@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { toggleLike } from "../actions/";
@@ -19,13 +19,29 @@ const LikesButton = styled.button`
   border-radius: 3px;
   font-size: 14px;
   line-height: 1.25;
-  color: ${props => (props.favorited ? "#fff" : "#4fb862")};
-  background-color: ${props => (props.favorited ? "#4fb862" : "#fff")};
   &:hover {
     color: #fff;
-    background-color: ${props => (props.favorited ? "#449d44" : "#4fb862")};
   }
   cursor: ${props => (props.disabled ? "wait" : "pointer")};
+  ${({ favorited }) => {
+    if (favorited) {
+      return css`
+        color: #fff;
+        background-color: #4fb862;
+        &:hover {
+          background-color: #449d44;
+        }
+      `;
+    } else {
+      return css`
+        color: #4fb862;
+        background-color: #fff;
+        &:hover {
+          background-color: #4fb862;
+        }
+      `;
+    }
+  }};
 `;
 
 class Likes extends Component {

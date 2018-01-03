@@ -55,7 +55,7 @@ class Profile extends Component {
     const { profile } = this.props;
     return (
       <Fragment>
-        <Heading />
+        <Heading withBanner={false} />
         <UserInfo profile={profile} />
         {this.renderArticles()}
       </Fragment>

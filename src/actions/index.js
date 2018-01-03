@@ -1,9 +1,12 @@
 import { createAction } from "redux-actions";
 import axios from "axios";
-
+import { push } from "react-router-redux";
 // import { getUsername } from "../reducers/";
 
 import {
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_FAILURE,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAILURE,
@@ -37,11 +40,16 @@ import {
   LIKE_TOGGLE_REQUEST,
   LIKE_TOGGLE_SUCCESS,
   LIKE_TOGGLE_FAILURE,
-  AUTH_ERRORS_CLEAR
+  AUTH_ERRORS_CLEAR,
+  EDITOR_ERRORS_CLEAR
 } from "./constants";
 
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
 export const loginUserFailure = createAction(USER_LOGIN_FAILURE);
+
+const userRegisterRequest = createAction(USER_REGISTER_REQUEST);
+const userRegisterSuccess = createAction(USER_REGISTER_SUCCESS);
+const userRegisterFailure = createAction(USER_REGISTER_FAILURE);
 
 const fetchUserRequest = createAction(USER_FETCH_REQUEST);
 const fetchUserSuccess = createAction(USER_FETCH_SUCCESS);
@@ -82,6 +90,7 @@ export const toggleLikeSuccess = createAction(LIKE_TOGGLE_SUCCESS);
 export const toggleLikeFailure = createAction(LIKE_TOGGLE_FAILURE);
 
 export const clearAuthErrors = createAction(AUTH_ERRORS_CLEAR);
+export const clearEditorErrors = createAction(EDITOR_ERRORS_CLEAR);
 
 const requestAPI = (endpoint, options = {}) => {
   const BASE_URL = "https://conduit.productionready.io";
@@ -133,7 +142,6 @@ export const updateUser = user => dispatch => {
   dispatch(updateUserRequest());
   return requestAPIWithAuthToken("/api/user", {
     method: "PUT",
-    // headers: { Authorization: `Token ${token}` },
     data: { user }
   })
     .then(({ data }) => {
@@ -157,13 +165,21 @@ export const fetchArticles = (endpoint, params) => dispatch => {
 
 export const publishArticle = article => dispatch => {
   dispatch(publishArticleRequest());
-  requestAPI("/api/articles", {
+  requestAPIWithAuthToken("/api/articles", {
     method: "POST",
     data: { article }
-  }).then(({ data }) => {
-    dispatch(publishArticleSuccess({ article: data.article }));
-    return data.article;
-  });
+  })
+    .then(
+      ({ data }) => {
+        dispatch(publishArticleSuccess({ article: data.article }));
+        return data.article;
+      },
+      ({ response }) => {
+        dispatch(publishArticleFailure({ errors: response.data.errors }));
+        return Promise.reject();
+      }
+    )
+    .then(({ slug }) => dispatch(push(`/article/${slug}`)), () => {});
 };
 
 export const fetchArticle = slug => dispatch => {

@@ -11,3 +11,19 @@ export const MainContainer = styled.div`
     max-width: 960px;
   }
 `;
+
+export const TwoColumnsContainer = styled.div`
+  display: flex;
+`;
+
+export const LeftColumn = styled.div`
+  margin-top: 1em;
+  flex-grow: 1;
+`;
+
+export const RightColumn = styled.div`
+  margin-top: 1em;
+  min-width: 200px;
+  max-width: 300px;
+  margin-left: 35px;
+`;

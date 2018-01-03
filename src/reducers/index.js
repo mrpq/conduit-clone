@@ -78,3 +78,10 @@ export const getIsToggleLikeRequestPending = state => {
     state.toggleLikeRequest
   );
 };
+
+export const getCurrArticleErrors = state => {
+  return fromCurrArticle.getCurrArticleErrors(state.currArticle);
+};
+export const getArticleIsPublishing = state => {
+  return fromCurrArticle.getArticleIsPublishing(state.currArticle);
+};

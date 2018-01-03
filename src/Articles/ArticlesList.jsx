@@ -4,42 +4,42 @@ import { push } from "react-router-redux";
 
 import ArticlePreview from "./ArticlePreview";
 import Pagination from "./Pagination";
-
 import {
   getArticles,
   getIsArticlesFetching,
   getFetchArticlesErrors
 } from "../reducers/";
 
-class ArticlesList extends Component {
-  render() {
-    const {
-      articles,
-      isFetching,
-      errors,
-      onArticleClick,
-      onAuthorClick
-    } = this.props;
-    if (isFetching) return <p>Loading articles...</p>;
-    return (
-      <Fragment>
-        <div>
-          {articles.map(article => {
-            return (
-              <ArticlePreview
-                key={article.slug}
-                article={article}
-                onArticleClick={onArticleClick}
-                onAuthorClick={onAuthorClick}
-              />
-            );
-          })}
-        </div>
-        <Pagination />
-      </Fragment>
-    );
-  }
-}
+let ArticlesList = props => {
+  const {
+    articles,
+    isFetching,
+    errors,
+    onArticleClick,
+    onAuthorClick,
+    onTagClick
+  } = props;
+  if (isFetching) return <p>Loading articles...</p>;
+  return (
+    <Fragment>
+      <div>
+        {articles.map(article => {
+          return (
+            <ArticlePreview
+              key={article.slug}
+              article={article}
+              onArticleClick={onArticleClick}
+              onAuthorClick={onAuthorClick}
+              onTagClick={onTagClick}
+            />
+          );
+        })}
+      </div>
+      <Pagination />
+    </Fragment>
+  );
+};
+
 const mapStateToProps = state => {
   return {
     articles: getArticles(state),
@@ -47,6 +47,7 @@ const mapStateToProps = state => {
     errors: getFetchArticlesErrors(state)
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     onArticleClick: slug => {
@@ -54,6 +55,9 @@ const mapDispatchToProps = dispatch => {
     },
     onAuthorClick: username => {
       dispatch(push(`/@${username}`));
+    },
+    onTagClick: slug => () => {
+      dispatch(push(`/article/${slug}`));
     }
   };
 };

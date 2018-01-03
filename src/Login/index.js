@@ -38,7 +38,7 @@ class Login extends Component {
     isAuthenticated && dispatch(push("/"));
   }
   clearErrors() {
-    const { dispatch, isAuthenticated } = this.props;
+    const { dispatch } = this.props;
     dispatch(clearAuthErrors());
   }
 
@@ -59,7 +59,7 @@ class Login extends Component {
     const { errors } = this.props;
     return (
       <Fragment>
-        <Heading />
+        <Heading withBanner={false} />
         <MainContainer>
           <H1>Sign in</H1>
           {errors ? <Errors errors={errors} /> : null}

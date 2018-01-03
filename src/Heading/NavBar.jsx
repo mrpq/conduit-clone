@@ -7,7 +7,6 @@ import { logoutUser, setCurrTab } from "../actions/";
 import { withAuth } from "../RenderWithAuthHOC";
 
 const NavBarItem = props => {
-  const { children, to, dispatch, action } = props;
   const ListItem = styled.li`
     padding: 10px 15px;
   `;
@@ -15,6 +14,7 @@ const NavBarItem = props => {
     text-decoration: none;
     color: #b2b2b2;
   `;
+  const { children, to, dispatch, action } = props;
   return (
     <ListItem>
       <Link
@@ -46,10 +46,9 @@ const NavBarContainer = styled.ul`
 
 class NavBar extends Component {
   shouldComponentUpdate(nextProps) {
-    const { isUpdated } = nextProps;
-    return isUpdated;
+    const { isUserUpdated } = nextProps;
+    return isUserUpdated;
   }
-  componentDidUpdate() {}
 
   render() {
     const { dispatch } = this.props;
@@ -81,7 +80,7 @@ class NavBar extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isUpdated: getIsUserUpdated(state)
+    isUserUpdated: getIsUserUpdated(state)
   };
 };
 

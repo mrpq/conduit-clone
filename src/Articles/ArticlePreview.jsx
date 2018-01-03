@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { DateTime } from "luxon";
 
 import Likes from "./Likes";
+import Tags from "../Tags/";
 
 const Article = styled.article`
   padding-top: 24px;
@@ -14,6 +15,7 @@ const Article = styled.article`
 `;
 const Header = styled.header`
   display: flex;
+  margin-bottom: 16px;
 `;
 const Avatar = styled.div`
   width: 34px;
@@ -37,27 +39,32 @@ const PublishDate = styled.div`
   font-size: 0.75rem;
   color: #b2b2b2;
 `;
-// const LikesWrapper = styled.div`
-//   flex-grow: 1;
-//   text-align: right;
-// `;
-// const Likes = styled.div`
-//   display: inline-block;
-//   padding: 3px 5px;
-//   border: 1px solid #4fb862;
-//   border-radius: 3px;
-//   font-size: 0.75em;
-//   color: #4fb862;
-// `;
-const Title = styled.h2``;
-const Preview = styled.p``;
+const Title = styled.h2`
+  margin-top: 0;
+  margin-bottom: 3px;
+`;
+const Preview = styled.p`
+  margin-top: 0;
+  margin-bottom: 16px;
+`;
 const Link = styled.a`
   color: #b2b2b2;
   text-decoration: none;
   font-size: 0.75em;
 `;
+const Footer = styled.footer`
+  display: flex;
+`;
+const TagsContainer = styled.div`
+  margin-left: auto;
+`;
 
-const ArticlePreview = ({ article, onArticleClick, onAuthorClick }) => {
+const ArticlePreview = ({
+  article,
+  onArticleClick,
+  onAuthorClick,
+  onTagClick
+}) => {
   const {
     author,
     slug,
@@ -92,9 +99,6 @@ const ArticlePreview = ({ article, onArticleClick, onAuthorClick }) => {
           favorited={favorited}
           favoritesCount={favoritesCount}
         />
-        {/* <LikesWrapper>
-          <Likes>&hearts;{`${favoritesCount}`}</Likes>
-        </LikesWrapper> */}
       </Header>
       <Title>{title}</Title>
       <Preview>
@@ -104,15 +108,20 @@ const ArticlePreview = ({ article, onArticleClick, onAuthorClick }) => {
             .slice(0, 10)
             .join(" ")}
       </Preview>
-      <Link
-        href={`/article/${slug}`}
-        onClick={e => {
-          e.preventDefault();
-          onArticleClick(slug);
-        }}
-      >
-        Read more...
-      </Link>
+      <Footer>
+        <Link
+          href={`/article/${slug}`}
+          onClick={e => {
+            e.preventDefault();
+            onArticleClick(slug);
+          }}
+        >
+          Read more...
+        </Link>
+        <TagsContainer>
+          <Tags tags={tagList} onTagClick={onTagClick(slug)} />
+        </TagsContainer>
+      </Footer>
     </Article>
   );
 };

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { COLORS } from "./constatnts";
 
 export const LargeInput = styled.input`
@@ -11,6 +11,8 @@ export const LargeInput = styled.input`
   font-size: 1.25em;
   line-height: 1.25;
   color: ${COLORS.abbey};
+  ${({ disabled }) =>
+    disabled ? { "background-color": COLORS.silver, opacity: 0.65 } : null};
 `;
 export const SmallInput = LargeInput.extend`
   padding: 0.5rem 0.75rem;
@@ -31,6 +33,14 @@ export const SubmitButton = styled.button`
   &:hover {
     background-color: ${COLORS.apple};
   }
+  ${({ disabled }) => {
+    return disabled
+      ? css`
+          opacity: 0.65;
+          cursor: "wait";
+        `
+      : null;
+  }};
 `;
 
 export const SmallSubmitButton = SubmitButton.extend`

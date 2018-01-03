@@ -8,6 +8,7 @@ class Article extends Component {
   componentDidMount() {
     this.fetchData();
   }
+
   fetchData() {
     const { dispatch, match: { params: { slug } } } = this.props;
     return dispatch(fetchArticle(slug));

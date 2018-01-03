@@ -18,7 +18,6 @@ const PageListItem = styled.li`
   color: #4fb862;
   border: 1px solid #b2b2b2;
   text-align: center;
-  /* border-left: none; */
   ${({ isActive }) =>
     isActive &&
     css`

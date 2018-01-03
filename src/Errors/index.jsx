@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const ErrorList = styled.ul`
@@ -7,17 +7,20 @@ const ErrorList = styled.ul`
   margin-bottom: 16px;
 `;
 
-class Errors extends Component {
-  render() {
-    const { errors } = this.props;
-    return (
-      <ErrorList>
-        {Object.keys(errors).map((error, i) => (
-          <li key={error}>{`${error} ${errors[error].join(" ")}`}</li>
-        ))}
-      </ErrorList>
-    );
-  }
-}
+const Errors = ({ errors }) => {
+  console.log(errors);
+  return (
+    <ErrorList>
+      {Object.keys(errors).reduce((acc, errorName, i) => {
+        return acc.concat(
+          errors[errorName].map((error, j) => {
+            return <li key={`${i}${j}`}>{`${errorName} ${error}`}</li>;
+          })
+        );
+        // <li key={error}>{`${error} ${errors[error].join(" ")}`}</li>
+      }, [])}
+    </ErrorList>
+  );
+};
 
 export default Errors;

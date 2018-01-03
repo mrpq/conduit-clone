@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import renderWithAuth from "../RenderWithAuthHOC";
+import { withAuth } from "../RenderWithAuthHOC";
 
 const BannerContainer = styled.div`
   padding-top: 1em;
@@ -29,6 +29,6 @@ class Banner extends Component {
   }
 }
 
-Banner = renderWithAuth(Banner, false);
+Banner = withAuth(Banner, { authRequired: false });
 
 export default Banner;

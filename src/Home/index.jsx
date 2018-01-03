@@ -1,13 +1,18 @@
 import React, { Component, Fragment } from "react";
-import { fetchTags, setCurrTab } from "../actions/";
 import { connect } from "react-redux";
+
+import { fetchTags, setCurrTab } from "../actions/";
+import { getCurrTab, getTags } from "../reducers/";
 import Heading from "../Heading/";
 import Articles from "../Articles/";
-import Tags from "../Tags/";
 import HomeTabs from "./HomeTabs";
-// import renderWithAuth from "../RenderWithAuthHOC";
-import { TwoColumnsContainer, LeftColumn, RightColumn } from "../Layout/";
-import { MainContainer } from "../common/containers";
+import HomeTags from "./HomeTags";
+import {
+  MainContainer,
+  TwoColumnsContainer,
+  LeftColumn,
+  RightColumn
+} from "../common/containers";
 
 class Home extends Component {
   constructor(props) {
@@ -32,17 +37,18 @@ class Home extends Component {
     }
   }
   render() {
+    const { currTab, tags, onTagClick } = this.props;
     return (
       <Fragment>
         <Heading />
         <MainContainer>
           <TwoColumnsContainer>
             <LeftColumn>
-              <HomeTabs />
+              <HomeTabs currTab={currTab} />
               <Articles />
             </LeftColumn>
             <RightColumn>
-              <Tags />
+              <HomeTags tags={tags} onTagClick={onTagClick} />
             </RightColumn>
           </TwoColumnsContainer>
         </MainContainer>
@@ -50,7 +56,20 @@ class Home extends Component {
     );
   }
 }
-
-Home = connect()(Home);
+const mapStateToProps = state => {
+  return {
+    currTab: getCurrTab(state),
+    tags: getTags(state)
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch,
+    onTagClick: tag => {
+      dispatch(setCurrTab({ type: "tag", tag }));
+    }
+  };
+};
+Home = connect(mapStateToProps, mapDispatchToProps)(Home);
 
 export default Home;
