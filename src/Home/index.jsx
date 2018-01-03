@@ -6,12 +6,8 @@ import Articles from "../Articles/";
 import Tags from "../Tags/";
 import HomeTabs from "./HomeTabs";
 // import renderWithAuth from "../RenderWithAuthHOC";
-import {
-  TwoColumnsContainer,
-  LeftColumn,
-  RightColumn,
-  UniversalContainer
-} from "../Layout/";
+import { TwoColumnsContainer, LeftColumn, RightColumn } from "../Layout/";
+import { MainContainer } from "../common/containers";
 
 class Home extends Component {
   constructor(props) {
@@ -39,7 +35,7 @@ class Home extends Component {
     return (
       <Fragment>
         <Heading />
-        <UniversalContainer>
+        <MainContainer>
           <TwoColumnsContainer>
             <LeftColumn>
               <HomeTabs />
@@ -49,7 +45,7 @@ class Home extends Component {
               <Tags />
             </RightColumn>
           </TwoColumnsContainer>
-        </UniversalContainer>
+        </MainContainer>
       </Fragment>
     );
   }

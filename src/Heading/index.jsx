@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import UniversalContainer from "../Layout/UniversalContainer";
+import { MainContainer } from "../common/containers";
 import NavBar from "./NavBar";
 import Banner from "./Banner";
 
@@ -7,9 +7,9 @@ class Heading extends Component {
   render() {
     return (
       <Fragment>
-        <UniversalContainer>
+        <MainContainer>
           <NavBar />
-        </UniversalContainer>
+        </MainContainer>
         <Banner />
       </Fragment>
     );

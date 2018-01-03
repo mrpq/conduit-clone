@@ -6,7 +6,7 @@ import Heading from "../Heading/";
 import Articles from "../Articles";
 import UserInfo from "./UserInfo";
 import { TabsContainer, Tab } from "../Tabs/";
-import { UniversalContainer } from "../Layout/";
+import { MainContainer } from "../common/containers";
 import { fetchProfile, setCurrTab } from "../actions/";
 import { getCurrProfile } from "../reducers/";
 import { getCurrTab } from "../reducers/";
@@ -37,7 +37,7 @@ class Profile extends Component {
     const { profile, currTab } = this.props;
     if (isEmpty(profile)) return null;
     return (
-      <UniversalContainer>
+      <MainContainer>
         <TabsContainer>
           <Tab
             type="user"
@@ -48,7 +48,7 @@ class Profile extends Component {
           </Tab>
         </TabsContainer>
         <Articles />
-      </UniversalContainer>
+      </MainContainer>
     );
   }
   render() {

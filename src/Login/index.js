@@ -5,8 +5,8 @@ import { push } from "react-router-redux";
 import styled from "styled-components";
 
 import Heading from "../Heading/";
-import { UniversalContainer } from "../Layout/";
-import { LargeInput, SubmitButton } from "../Editor/";
+import { MainContainer } from "../common/containers";
+import { LargeInput, SubmitButton } from "../common/inputs";
 import Errors from "../Errors/";
 
 import { loginUser, clearAuthErrors } from "../actions/";
@@ -60,7 +60,7 @@ class Login extends Component {
     return (
       <Fragment>
         <Heading />
-        <UniversalContainer>
+        <MainContainer>
           <H1>Sign in</H1>
           {errors ? <Errors errors={errors} /> : null}
           <div>
@@ -80,7 +80,7 @@ class Login extends Component {
               <SubmitButton onClick={this.handleSubmit}>Sign in</SubmitButton>
             </div>
           </div>
-        </UniversalContainer>
+        </MainContainer>
       </Fragment>
     );
   }

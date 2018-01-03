@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import styled from "styled-components";
 import isEmpty from "lodash/isEmpty";
-import { UniversalContainer } from "../Layout/";
+import { MainContainer } from "../common/containers";
 import { followProfile } from "../actions/";
 import { getIsCurrProfileFetching } from "../reducers/";
 
@@ -79,7 +79,7 @@ class UserInfo extends Component {
     if (isEmpty(profile)) return null;
     return (
       <InfoContainer>
-        <UniversalContainer>
+        <MainContainer>
           <Avatar
             src={
               profile.image ||
@@ -88,7 +88,7 @@ class UserInfo extends Component {
           />
           <Username>{profile.username}</Username>
           <FollowBlock profile={profile} />
-        </UniversalContainer>
+        </MainContainer>
       </InfoContainer>
     );
   }

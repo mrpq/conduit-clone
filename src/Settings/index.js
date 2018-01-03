@@ -3,8 +3,13 @@ import { connect } from "react-redux";
 import omitBy from "lodash/omitBy";
 
 import Heading from "../Heading/";
-import { LargeInput, SmallInput, Textarea, SubmitButton } from "../Editor/";
-import { UniversalContainer } from "../Layout/";
+import {
+  LargeInput,
+  SmallInput,
+  Textarea,
+  SubmitButton
+} from "../common/inputs";
+import { MainContainer } from "../common/containers";
 import { updateUser } from "../actions/";
 // email, username, password, image, bio
 class Settings extends Component {
@@ -38,7 +43,7 @@ class Settings extends Component {
     return (
       <Fragment>
         <Heading />
-        <UniversalContainer>
+        <MainContainer>
           <form>
             <SmallInput
               type="text"
@@ -78,7 +83,7 @@ class Settings extends Component {
               </SubmitButton>
             </div>
           </form>
-        </UniversalContainer>
+        </MainContainer>
       </Fragment>
     );
   }
