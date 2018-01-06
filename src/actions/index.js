@@ -1,7 +1,6 @@
 import { createAction } from "redux-actions";
 import axios from "axios";
 import { push } from "react-router-redux";
-// import { getUsername } from "../reducers/";
 
 import {
   USER_REGISTER_REQUEST,
@@ -32,7 +31,11 @@ import {
   ARTICLE_FETCH_REQUEST,
   ARTICLE_FETCH_SUCCESS,
   ARTICLE_FETCH_FAILURE,
+  ARTICLE_DELETE_REQUEST,
+  ARTICLE_DELETE_SUCCESS,
+  ARTICLE_DELETE_FAILURE,
   CURR_TAB_SET,
+  CURR_PROFILE_SET,
   PAGE_SET,
   TAG_FETCH_REQUEST,
   TAG_FETCH_SUCCESS,
@@ -80,6 +83,10 @@ const fetchArticlesRequest = createAction(ARTICLES_FETCH_REQUEST);
 const fetchArticlesSuccess = createAction(ARTICLES_FETCH_SUCCESS);
 const fetchArticlesFailure = createAction(ARTICLES_FETCH_FAILURE);
 
+const deleteArticlesRequest = createAction(ARTICLE_DELETE_REQUEST);
+const deleteArticlesSuccess = createAction(ARTICLE_DELETE_SUCCESS);
+const deleteArticlesFailure = createAction(ARTICLE_DELETE_FAILURE);
+
 const fetchCommentsRequest = createAction(COMMENTS_FETCH_REQUEST);
 const fetchCommentsSuccess = createAction(COMMENTS_FETCH_SUCCESS);
 const fetchCommentsFailure = createAction(COMMENTS_FETCH_FAILURE);
@@ -101,6 +108,7 @@ const fetchArticleSuccess = createAction(ARTICLE_FETCH_SUCCESS);
 const fetchArticleFailure = createAction(ARTICLE_FETCH_FAILURE);
 
 export const setCurrTab = createAction(CURR_TAB_SET);
+export const setCurrProfile = createAction(CURR_PROFILE_SET);
 export const setPage = createAction(PAGE_SET);
 
 export const fetchTagsRequest = createAction(TAG_FETCH_REQUEST);
@@ -220,6 +228,21 @@ export const publishArticle = article => dispatch => {
       }
     )
     .then(({ slug }) => dispatch(push(`/article/${slug}`)), () => {});
+};
+
+export const deleteArticle = slug => dispatch => {
+  dispatch(deleteArticlesRequest());
+  return requestAPIWithAuthToken(`/api/articles/${slug}`, { method: "DELETE" })
+    .then(
+      ({ data }) => {
+        return dispatch(deleteArticlesSuccess());
+      },
+      ({ response }) => {
+        dispatch(deleteArticlesFailure());
+        return Promise.reject();
+      }
+    )
+    .then(() => dispatch(push("/")));
 };
 
 export const fetchArticle = slug => dispatch => {

@@ -7,8 +7,7 @@ import ArticleContent from "./ArticleContent";
 import Comments from "./Comments";
 import { MainContainer } from "../common/containers";
 import { getCurrArticle, getIsCurrArticleFetching } from "../reducers/";
-import { fetchArticle } from "../actions/index";
-import { fetchProfile } from "../actions/index";
+import { fetchProfile, fetchArticle } from "../actions/index";
 
 class Article extends Component {
   componentDidMount() {

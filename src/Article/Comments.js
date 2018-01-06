@@ -4,10 +4,13 @@ import { push } from "react-router-redux";
 
 import CommentsList from "./CommentsList";
 import CommentForm from "./CommentForm";
-import { MainContainer } from "../common/containers";
+import { MainContainer, CenteringContainer } from "../common/containers";
 import { fetchComments, deleteComment, postComment } from "../actions/";
-import { getComments } from "../reducers/index";
-import { getIsCommentDeleteRequestPending } from "../reducers/";
+import {
+  getComments,
+  getIsCommentDeleteRequestPending,
+  getIsAuthenticated
+} from "../reducers/";
 
 const AuthBlock = () => {
   return (
@@ -30,6 +33,7 @@ class Comments extends Component {
   }
   render() {
     const {
+      isAuthenticated,
       comments,
       slug,
       onDeleteClick,
@@ -38,15 +42,17 @@ class Comments extends Component {
       commentIsDeleteing
     } = this.props;
     return (
-      <Fragment>
-        <CommentForm onSubmitCommentClick={onSubmitCommentClick(slug)} />
+      <CenteringContainer>
+        {isAuthenticated ? (
+          <CommentForm onSubmitCommentClick={onSubmitCommentClick(slug)} />
+        ) : null}
         <CommentsList
           comments={comments}
           onDeleteClick={onDeleteClick(slug)}
           onAuthorClick={onAuthorClick}
           commentIsDeleteing={commentIsDeleteing}
         />
-      </Fragment>
+      </CenteringContainer>
     );
   }
 }
@@ -54,7 +60,8 @@ class Comments extends Component {
 const mapStateToProps = state => {
   return {
     comments: getComments(state),
-    commentIsDeleteing: getIsCommentDeleteRequestPending(state)
+    commentIsDeleteing: getIsCommentDeleteRequestPending(state),
+    isAuthenticated: getIsAuthenticated(state)
   };
 };
 

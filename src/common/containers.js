@@ -12,6 +12,15 @@ export const MainContainer = styled.div`
   }
 `;
 
+export const CenteringContainer = styled.div`
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  @media all and (min-width: 991px) {
+    max-width: 65%;
+  }
+`;
+
 export const TwoColumnsContainer = styled.div`
   display: flex;
 `;

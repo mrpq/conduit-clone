@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from "react";
-// import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import styled from "styled-components";
 
 import Heading from "../Heading/";
-import { MainContainer } from "../common/containers";
+import { MainContainer, CenteringContainer } from "../common/containers";
 import { LargeInput, SubmitButton } from "../common/inputs";
 import Errors from "../Errors/";
 
@@ -61,25 +60,27 @@ class Login extends Component {
       <Fragment>
         <Heading withBanner={false} />
         <MainContainer>
-          <H1>Sign in</H1>
-          {errors ? <Errors errors={errors} /> : null}
-          <div>
-            <LargeInput
-              type="email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-            <LargeInput
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-            <div style={{ textAlign: "right" }}>
-              <SubmitButton onClick={this.handleSubmit}>Sign in</SubmitButton>
+          <CenteringContainer>
+            <H1>Sign in</H1>
+            {errors ? <Errors errors={errors} /> : null}
+            <div>
+              <LargeInput
+                type="email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+              <LargeInput
+                type="password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+              />
+              <div style={{ textAlign: "right" }}>
+                <SubmitButton onClick={this.handleSubmit}>Sign in</SubmitButton>
+              </div>
             </div>
-          </div>
+          </CenteringContainer>
         </MainContainer>
       </Fragment>
     );

@@ -5,7 +5,7 @@ import { push } from "react-router-redux";
 import styled from "styled-components";
 
 import Heading from "../Heading/";
-import { MainContainer } from "../common/containers";
+import { MainContainer, CenteringContainer } from "../common/containers";
 import { LargeInput, SubmitButton } from "../common/inputs";
 import Errors from "../Errors/";
 
@@ -59,34 +59,36 @@ class Login extends Component {
       <Fragment>
         <Heading withBanner={false} />
         <MainContainer>
-          <H1>Sign up</H1>
-          {errors ? <Errors errors={errors} /> : null}
-          <div>
-            <LargeInput
-              type="text"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-              placeholder="Username"
-            />
-            <LargeInput
-              type="email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-              placeholder="Email"
-            />
-            <LargeInput
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-              placeholder="Password"
-            />
-            <div style={{ textAlign: "right" }}>
-              <SubmitButton onClick={this.handleSubmit}>Sign in</SubmitButton>
+          <CenteringContainer>
+            <H1>Sign up</H1>
+            {errors ? <Errors errors={errors} /> : null}
+            <div>
+              <LargeInput
+                type="text"
+                name="username"
+                value={this.state.username}
+                onChange={this.handleChange}
+                placeholder="Username"
+              />
+              <LargeInput
+                type="email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+                placeholder="Email"
+              />
+              <LargeInput
+                type="password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+                placeholder="Password"
+              />
+              <div style={{ textAlign: "right" }}>
+                <SubmitButton onClick={this.handleSubmit}>Sign in</SubmitButton>
+              </div>
             </div>
-          </div>
+          </CenteringContainer>
         </MainContainer>
       </Fragment>
     );

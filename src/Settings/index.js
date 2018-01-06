@@ -9,7 +9,7 @@ import {
   Textarea,
   SubmitButton
 } from "../common/inputs";
-import { MainContainer } from "../common/containers";
+import { MainContainer, CenteringContainer } from "../common/containers";
 import { updateUser } from "../actions/";
 // email, username, password, image, bio
 class Settings extends Component {
@@ -44,45 +44,47 @@ class Settings extends Component {
       <Fragment>
         <Heading />
         <MainContainer>
-          <form>
-            <SmallInput
-              type="text"
-              name="image"
-              value={this.state.image}
-              onChange={this.handleChange}
-              placeholder="URL of profile picture"
-            />
-            <LargeInput
-              type="text"
-              name="username"
-              onChange={this.handleChange}
-              value={this.state.username}
-            />
-            <Textarea
-              name="bio"
-              value={this.state.bio}
-              onChange={this.handleChange}
-              placeholder="Short bio about you"
-              rows="8"
-            />
-            <LargeInput
-              type="text"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-            <LargeInput
-              type="password"
-              name="password"
-              onChange={this.handleChange}
-              value={this.state.password}
-            />
-            <div style={{ textAlign: "right" }}>
-              <SubmitButton onClick={this.handleSubmit}>
-                Update Settings
-              </SubmitButton>
-            </div>
-          </form>
+          <CenteringContainer>
+            <form>
+              <SmallInput
+                type="text"
+                name="image"
+                value={this.state.image}
+                onChange={this.handleChange}
+                placeholder="URL of profile picture"
+              />
+              <LargeInput
+                type="text"
+                name="username"
+                onChange={this.handleChange}
+                value={this.state.username}
+              />
+              <Textarea
+                name="bio"
+                value={this.state.bio}
+                onChange={this.handleChange}
+                placeholder="Short bio about you"
+                rows="8"
+              />
+              <LargeInput
+                type="text"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+              <LargeInput
+                type="password"
+                name="password"
+                onChange={this.handleChange}
+                value={this.state.password}
+              />
+              <div style={{ textAlign: "right" }}>
+                <SubmitButton onClick={this.handleSubmit}>
+                  Update Settings
+                </SubmitButton>
+              </div>
+            </form>
+          </CenteringContainer>
         </MainContainer>
       </Fragment>
     );
