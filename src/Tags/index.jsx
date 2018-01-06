@@ -19,15 +19,20 @@ const Tag = styled.li`
   background-color: #808a90;
   color: #fff;
   cursor: pointer;
+  ${props => props.customStyles};
 `;
 
-const Tags = ({ tags, onTagClick }) => {
+const Tags = ({ tags, onTagClick, customStyles }) => {
   if (!tags.length) return null;
   return (
     <TagList>
       {tags.map(tag => {
         return (
-          <Tag key={tag} onClick={() => onTagClick(tag)}>
+          <Tag
+            key={tag}
+            customStyles={customStyles}
+            onClick={onTagClick ? () => onTagClick(tag) : null}
+          >
             {tag}
           </Tag>
         );

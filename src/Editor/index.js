@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import pick from "lodash/pick";
 
 import Heading from "../Heading/";
 import Errors from "../Errors/";
+import { withAuth } from "../RenderWithAuthHOC";
 import {
   LargeInput,
   SmallInput,
@@ -11,8 +13,12 @@ import {
   Textarea
 } from "../common/inputs";
 import { MainContainer } from "../common/containers";
-import { publishArticle, clearEditorErrors } from "../actions/";
-import { getCurrArticleErrors, getArticleIsPublishing } from "../reducers/";
+import { publishArticle, clearEditorErrors, fetchArticle } from "../actions/";
+import {
+  getCurrArticleErrors,
+  getArticleIsPublishing,
+  getCurrArticle
+} from "../reducers/";
 
 class Editor extends Component {
   constructor(props) {
@@ -23,9 +29,15 @@ class Editor extends Component {
       body: "",
       tagList: ""
     };
+    // const { article = null } = this.props;
+    // this.state = article
+    //   ? pick(article, ["title", "description", "body", "tagList"])
+    //   : formFields;
     this.clearErrors();
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.fetchData();
+  }
 
   handleChange = e => {
     const { target: { value, name } } = e;
@@ -50,6 +62,16 @@ class Editor extends Component {
   clearErrors() {
     const { dispatch } = this.props;
     dispatch(clearEditorErrors());
+  }
+
+  fetchData() {
+    const { dispatch, match: { params: { slug } } } = this.props;
+    slug &&
+      dispatch(fetchArticle(slug)).then(article =>
+        this.setState(
+          pick(article, ["title", "description", "body", "tagList"])
+        )
+      );
   }
 
   render() {
@@ -103,13 +125,13 @@ class Editor extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     errors: getCurrArticleErrors(state),
     isPublishing: getArticleIsPublishing(state)
   };
 };
 
-Editor = connect(mapStateToProps)(Editor);
+Editor = withAuth(connect(mapStateToProps)(Editor), { redirectTo: "/" });
 
 export default Editor;

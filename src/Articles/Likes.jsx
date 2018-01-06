@@ -35,7 +35,7 @@ const LikesButton = styled.button`
     } else {
       return css`
         color: #4fb862;
-        background-color: #fff;
+        background-color: transparent;
         &:hover {
           background-color: #4fb862;
         }

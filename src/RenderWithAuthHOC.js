@@ -14,7 +14,10 @@ const renderWithAuth = (Wrapped, authRequired = true) => {
   };
 };
 
-export const withAuth = (Wrapped, { authRequired = true, redirectTo }) => {
+export const withAuth = (
+  Wrapped,
+  { authRequired = true, component = null, redirectTo }
+) => {
   class Wrapper extends Component {
     componentDidMount() {
       if (redirectTo) this.checkAndRedirect();
@@ -34,7 +37,7 @@ export const withAuth = (Wrapped, { authRequired = true, redirectTo }) => {
       if (authRequired === isAuthenticated) {
         return <Wrapped {...this.props} />;
       } else {
-        return null;
+        return component;
       }
     }
   }

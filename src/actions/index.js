@@ -41,15 +41,25 @@ import {
   LIKE_TOGGLE_SUCCESS,
   LIKE_TOGGLE_FAILURE,
   AUTH_ERRORS_CLEAR,
-  EDITOR_ERRORS_CLEAR
+  EDITOR_ERRORS_CLEAR,
+  COMMENTS_FETCH_FAILURE,
+  COMMENTS_FETCH_SUCCESS,
+  COMMENTS_FETCH_REQUEST,
+  COMMENT_POST_REQUEST,
+  COMMENT_POST_SUCCESS,
+  COMMENT_POST_FAILURE,
+  COMMENT_DELETE_REQUEST,
+  COMMENT_DELETE_SUCCESS,
+  COMMENT_DELETE_FAILURE
 } from "./constants";
+import { getIsAuthenticated } from "../reducers/";
 
 export const loginUserSuccess = createAction(USER_LOGIN_SUCCESS);
 export const loginUserFailure = createAction(USER_LOGIN_FAILURE);
 
-const userRegisterRequest = createAction(USER_REGISTER_REQUEST);
-const userRegisterSuccess = createAction(USER_REGISTER_SUCCESS);
-const userRegisterFailure = createAction(USER_REGISTER_FAILURE);
+const registerUserRequest = createAction(USER_REGISTER_REQUEST);
+const registerUserSuccess = createAction(USER_REGISTER_SUCCESS);
+const registerUserFailure = createAction(USER_REGISTER_FAILURE);
 
 const fetchUserRequest = createAction(USER_FETCH_REQUEST);
 const fetchUserSuccess = createAction(USER_FETCH_SUCCESS);
@@ -69,6 +79,18 @@ const followProfileFailure = createAction(PROFILE_FOLLOW_FAILURE);
 const fetchArticlesRequest = createAction(ARTICLES_FETCH_REQUEST);
 const fetchArticlesSuccess = createAction(ARTICLES_FETCH_SUCCESS);
 const fetchArticlesFailure = createAction(ARTICLES_FETCH_FAILURE);
+
+const fetchCommentsRequest = createAction(COMMENTS_FETCH_REQUEST);
+const fetchCommentsSuccess = createAction(COMMENTS_FETCH_SUCCESS);
+const fetchCommentsFailure = createAction(COMMENTS_FETCH_FAILURE);
+
+const deleteCommentRequest = createAction(COMMENT_DELETE_REQUEST);
+const deleteCommentSuccess = createAction(COMMENT_DELETE_SUCCESS);
+const deleteCommentFailure = createAction(COMMENT_DELETE_FAILURE);
+
+const postCommentRequest = createAction(COMMENT_POST_REQUEST);
+const postCommentSuccess = createAction(COMMENT_POST_SUCCESS);
+const postCommentFailure = createAction(COMMENT_POST_FAILURE);
 
 const publishArticleRequest = createAction(ARTICLE_PUBLISH_REQUEST);
 const publishArticleSuccess = createAction(ARTICLE_PUBLISH_SUCCESS);
@@ -112,6 +134,24 @@ const requestAPIWithAuthToken = (endpoint, options) => {
     headers.Authorization = `Token ${token}`;
   }
   return requestAPI(endpoint, { ...options, headers });
+};
+
+export const registerUser = user => dispatch => {
+  dispatch(registerUserRequest());
+  return requestAPI("/api/users", {
+    method: "POST",
+    data: {
+      user
+    }
+  })
+    .then(({ data }) => {
+      localStorage.setItem("jwt_token", data.user.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      return dispatch(registerUserSuccess({ user: data.user }));
+    })
+    .catch(({ response }) => {
+      return dispatch(registerUserFailure({ errors: response.data.errors }));
+    });
 };
 
 export const loginUser = ({ email, password }) => dispatch => {
@@ -184,8 +224,9 @@ export const publishArticle = article => dispatch => {
 
 export const fetchArticle = slug => dispatch => {
   dispatch(fetchArticleRequest());
-  requestAPI(`/api/articles/${slug}`).then(({ data }) => {
-    return dispatch(fetchArticleSuccess({ article: data.article }));
+  return requestAPI(`/api/articles/${slug}`).then(({ data }) => {
+    dispatch(fetchArticleSuccess({ article: data.article }));
+    return data.article;
   });
 };
 
@@ -197,14 +238,20 @@ export const fetchTags = () => dispatch => {
 };
 
 export const fetchProfile = username => dispatch => {
-  console.log("fetch profile!");
   dispatch(fetchProfileRequest());
-  return requestAPI(`/api/profiles/${username}`).then(({ data }) => {
-    return dispatch(fetchProfileSuccess({ profile: data.profile }));
-  });
+  return requestAPIWithAuthToken(`/api/profiles/${username}`).then(
+    ({ data }) => {
+      return dispatch(fetchProfileSuccess({ profile: data.profile }));
+    }
+  );
 };
 
-export const followProfile = (username, follow = true) => dispatch => {
+export const followProfile = (username, follow = true) => (
+  dispatch,
+  getState
+) => {
+  const isAuthenticated = getIsAuthenticated(getState());
+  if (!isAuthenticated) return dispatch(push("/login"));
   dispatch(followProfileRequest());
   return requestAPIWithAuthToken(`/api/profiles/${username}/follow`, {
     method: follow ? "POST" : "DELETE"
@@ -218,4 +265,42 @@ export const toggleLike = (slug, favourited) => dispatch => {
   return requestAPIWithAuthToken(`/api/articles/${slug}/favorite`, {
     method: favourited ? "DELETE" : "POST"
   }).then(({ data }) => dispatch(toggleLikeSuccess({ article: data.article })));
+};
+
+export const fetchComments = slug => dispatch => {
+  dispatch(fetchCommentsRequest());
+  return requestAPI(`/api/articles/${slug}/comments`).then(
+    ({ data }) => dispatch(fetchCommentsSuccess({ comments: data.comments })),
+    ({ response }) => {
+      dispatch(fetchCommentsFailure({ errors: response.data.errors }));
+      return Promise.reject();
+    }
+  );
+};
+
+export const postComment = (slug, comment) => dispatch => {
+  dispatch(postCommentRequest());
+  return requestAPIWithAuthToken(`/api/articles/${slug}/comments/`, {
+    method: "POST",
+    data: { comment: { body: comment } }
+  }).then(
+    ({ data }) => dispatch(postCommentSuccess({ comment: data.comment })),
+    () => {
+      dispatch(postCommentFailure());
+      return Promise.reject();
+    }
+  );
+};
+
+export const deleteComment = (slug, id) => dispatch => {
+  dispatch(deleteCommentRequest());
+  return requestAPIWithAuthToken(`/api/articles/${slug}/comments/${id}`, {
+    method: "DELETE"
+  }).then(
+    response => dispatch(deleteCommentSuccess({ id })),
+    () => {
+      dispatch(deleteCommentFailure());
+      return Promise.reject();
+    }
+  );
 };

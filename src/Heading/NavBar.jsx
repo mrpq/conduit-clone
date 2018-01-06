@@ -62,7 +62,8 @@ class NavBar extends Component {
         <PrivateNavBarItem to="/editor">New Article</PrivateNavBarItem>
         <PrivateNavBarItem to="/settings">Settings</PrivateNavBarItem>
         <PrivateNavBarItem to={`/@${username}`}>{username}</PrivateNavBarItem>
-        <PublicNavBarItem to="/login">Login</PublicNavBarItem>
+        <PublicNavBarItem to="/login">Sign in</PublicNavBarItem>
+        <PublicNavBarItem to="/register">Sigh up</PublicNavBarItem>
         <PrivateNavBarItem
           to="/"
           dispatch={dispatch}

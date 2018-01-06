@@ -8,7 +8,6 @@ const ErrorList = styled.ul`
 `;
 
 const Errors = ({ errors }) => {
-  console.log(errors);
   return (
     <ErrorList>
       {Object.keys(errors).reduce((acc, errorName, i) => {

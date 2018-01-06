@@ -9,11 +9,13 @@ import {
   auth,
   user,
   articles,
+  comments,
   currArticle,
   currTab,
   tags,
   currProfile,
-  toggleLikeRequest
+  toggleLikeRequest,
+  commentDeleteRequest
 } from "./reducers/";
 
 export const history = createHistory();
@@ -21,11 +23,13 @@ const rootReducer = combineReducers({
   auth,
   user,
   articles,
+  comments,
   currArticle,
   currTab,
   tags,
   currProfile,
   toggleLikeRequest,
+  commentDeleteRequest,
   router: routerReducer
 });
 

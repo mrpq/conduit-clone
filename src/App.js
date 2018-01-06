@@ -5,6 +5,7 @@ import { ConnectedRouter } from "react-router-redux";
 import "normalize.css";
 import "./App.css";
 
+import Register from "./Register/";
 import Login from "./Login/";
 import Home from "./Home/";
 import Editor from "./Editor/";
@@ -25,10 +26,8 @@ class App extends Component {
           <div>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
-            <Route
-              path="/editor"
-              component={withAuth(Editor, { redirectTo: "/" })}
-            />
+            <Route path="/register" component={Register} />
+            <Route path="/editor/:slug?" component={Editor} />
             <Route
               path="/settings"
               component={withAuth(Settings, { redirectTo: "/login" })}

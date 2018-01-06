@@ -25,6 +25,7 @@ const Avatar = styled.div`
       ? `url("${image}")`
       : `url("https://static.productionready.io/images/smiley-cyrus.jpg")`};
   background-size: contain;
+  background-repeat: no-repeat;
   border-radius: 50%;
 `;
 const Meta = styled.div`

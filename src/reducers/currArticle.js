@@ -5,7 +5,8 @@ import {
   ARTICLE_PUBLISH_SUCCESS,
   ARTICLE_PUBLISH_REQUEST,
   ARTICLE_PUBLISH_FAILURE,
-  EDITOR_ERRORS_CLEAR
+  EDITOR_ERRORS_CLEAR,
+  LIKE_TOGGLE_SUCCESS
 } from "../actions/constants";
 
 const currArticle = (
@@ -21,6 +22,8 @@ const currArticle = (
       return { ...state, article: action.payload.article, isFetching: false };
     case ARTICLE_PUBLISH_SUCCESS:
       return { ...state, article: action.payload.article, isPublishing: false };
+    case LIKE_TOGGLE_SUCCESS:
+      return { ...state, article: action.payload.article };
     case ARTICLE_FETCH_FAILURE:
       return {
         ...state,

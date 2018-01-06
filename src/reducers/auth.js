@@ -1,4 +1,7 @@
 import {
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_FAILURE,
   USER_LOGIN_REQUEST,
   USER_LOGIN_FAILURE,
   USER_LOGIN_SUCCESS,
@@ -15,12 +18,15 @@ const auth = (
   action
 ) => {
   switch (action.type) {
-    case USER_LOGIN_REQUEST: {
+    case USER_LOGIN_REQUEST:
+    case USER_REGISTER_REQUEST: {
       return { isAuthenticated: false, isFetching: true };
     }
     case USER_LOGIN_SUCCESS:
+    case USER_REGISTER_SUCCESS:
       return { isAuthenticated: true, isFetching: false };
     case USER_LOGIN_FAILURE:
+    case USER_REGISTER_FAILURE:
       const errors = action.payload.errors;
       return { ...state, isFetching: false, errors };
     case USER_LOGOUT_SUCCESS:
