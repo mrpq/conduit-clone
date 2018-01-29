@@ -29,5 +29,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage": "http://mrpq.github.io/demo"
+  "homepage": "http://mrpq.github.io/conduit-clone/demo/"
 }
