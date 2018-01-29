@@ -18,7 +18,7 @@ import {
   commentDeleteRequest
 } from "./reducers/";
 
-export const history = createHistory();
+export const history = createHistory({ basename: "/conduit-clone" });
 const rootReducer = combineReducers({
   auth,
   user,
