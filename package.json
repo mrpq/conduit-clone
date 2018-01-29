@@ -2,6 +2,7 @@
   "name": "conduit",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mrpq.github.io/conduit-clone/",
   "dependencies": {
     "axios": "^0.17.1",
     "history": "^4.7.2",
